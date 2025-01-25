@@ -1,0 +1,1636 @@
+{
+    "info": {
+        "_postman_id": "e3d5cd03-2001-47ae-b8d6-e99ed13c5d6a",
+        "name": "API Documentation #reference",
+        "description": "This template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n### How to use this template:\n\n- Replace the content given brackets (()) with your API's details.\n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe ((product name)) provides many API products, tools, and resources that enable you to ((add product value here)).\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the ((add APIs here)), you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use a valid API Key to send requests to the API endpoints. You can get your API key from Postman's [integrations dashboard](https://go.postman.co/settings/me/api-keys).\n- The API has [rate and usage limits](https://learning.postman.com/docs/developer/postman-api/postman-api-rate-limits/).\n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe ((product name)) API uses ((add your API's authorization type)) for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nPostman uses API keys for authentication. You can generate a Postman API key in the [API keys](https://postman.postman.co/settings/me/api-keys) section of your Postman account settings.\n\nYou must include an API key in each request to the Postman API with the X-Api-Key request header.\n\n### Authentication error response\n\nIf an API key is missing, malformed, or invalid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 300 requests per minute. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `X-RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there\u2019s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "29525622",
+        "_collection_link": "https://hackathon-tansche.postman.co/workspace/TANSCHE-Hackathon-~3f291c4d-e2e8-48d1-a849-fd4215ec2d9c/collection/29525622-e3d5cd03-2001-47ae-b8d6-e99ed13c5d6a?action=share&source=collection_link&creator=29525622"
+    },
+    "item": [
+        {
+            "name": "User",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Welcome",
+                            "protocolProfileBehavior": {
+                                "disabledSystemHeaders": {}
+                            },
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Register",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"instituteCode\": \"SIH456 (Description for instituteCode)\",\n    \"instituteName\": \"Sample Institute name (Description for instituteName)\",\n    \"instituteAddress\": \"sample address of institute (Description for instituteAddress)\",\n    \"instituteCity\": \"sample city of institute (Description for instituteCity)\",\n    \"instituteState\": \"sample state of institute (Description for instituteState)\",\n    \"institutePincode\": \"123456 (Description for institutePincode)\",\n    \"instituteType\": \"Engineering (Description for instituteType)\",\n    \"pocName\": \"po contant name (Description for pocName)\",\n    \"pocEmail\": \"mail@mail.com (Description for pocEmail)\",\n    \"pocPhone\": \"1234567890 (Description for pocPhone)\",\n    \"password\": \"abcd1234 (Description for password)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/register",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "register"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/register."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"poc_email@email.com (Description for username)\",\n    \"password\": \"HC&C62hP (Description for password)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/login",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "login"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/login."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Suggestion name",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/suggestions/name?query=nandha",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "suggestions",
+                                        "name"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "query",
+                                            "value": "nandha"
+                                        }
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/suggestions/name?query=nandha."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get User",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJTSUg0NTYiLCJpbnN0aXR1dGlvblR5cGUiOiJFbmdpbmVlcmluZyIsImFkZHJlc3MiOiJzYW1wbGUgYWRkcmVzcyBvZiBpbnN0aXR1dGUiLCJjaXR5Ijoic2FtcGxlIGNpdHkgb2YgaW5zdGl0dXRlIiwic3RhdGUiOiJzYW1wbGUgc3RhdGUgb2YgaW5zdGl0dXRlIiwicGluY29kZSI6IjEyMzQ1NiIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc1MzY0NTUsImV4cCI6MTczNzU1MDg1NX0.HSUXVBFOr2H2UUe4Q4dS-FQpwMfApc4xUK36n2U08fI",
+                                        "description": "The Authorization header is required for request authentication or other purposes."
+                                    },
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/getUser",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "getUser"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/getUser."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Suggesstion Code",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/suggestions/code?query=au",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "suggestions",
+                                        "code"
+                                    ],
+                                    "query": [
+                                        {
+                                            "key": "query",
+                                            "value": "au"
+                                        }
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/suggestions/code?query=au."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Institute Data",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/institute-data/au13",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "institute-data",
+                                        "au13"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/institute-data/au13."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Profile",
+                    "item": [
+                        {
+                            "name": "Get Institute Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "https://w2tpzms2-5173.inc1.devtunnels.ms/",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/getInstituteDetails",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "getInstituteDetails"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/getInstituteDetails."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Institute Details",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Authorization",
+                                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJTSUg0NTYiLCJpbnN0aXR1dGlvblR5cGUiOiJFbmdpbmVlcmluZyIsImFkZHJlc3MiOiJzYW1wbGUgYWRkcmVzcyBvZiBpbnN0aXR1dGUiLCJjaXR5Ijoic2FtcGxlIGNpdHkgb2YgaW5zdGl0dXRlIiwic3RhdGUiOiJzYW1wbGUgc3RhdGUgb2YgaW5zdGl0dXRlIiwicGluY29kZSI6IjEyMzQ1NiIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc1MzY0NTUsImV4cCI6MTczNzU1MDg1NX0.HSUXVBFOr2H2UUe4Q4dS-FQpwMfApc4xUK36n2U08fI",
+                                        "disabled": true,
+                                        "description": "The Authorization header is required for request authentication or other purposes."
+                                    },
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"42 (Description for id)\",\n    \"institution_code\": \"AU112 (Description for institution_code)\",\n    \"institution_name\": \"NANDHA ARTS AND SCIENCE COLLEGE (Description for institution_name)\",\n    \"institution_type\": \"University (Description for institution_type)\",\n    \"address\": \"1, RAMAKRISHNA NAGAR (Description for address)\",\n    \"city\": \"APPAKUDAL (Description for city)\",\n    \"state\": \"Tamil Nadu (Description for state)\",\n    \"pincode\": \"638315 (Description for pincode)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/updateInstituteDetails",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "updateInstituteDetails"
+                                    ]
+                                },
+                                "description": "This endpoint uses the PUT method to interact with {{base_url}}/updateInstituteDetails."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create Team",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"institutionId\": \"42 (Description for institutionId)\",\n    \"teamName\": \"sample khasbasdd (Description for teamName)\",\n    \"participants\": \"1 (Description for participants)\",\n    \"leaderName\": \"hari (Description for leaderName)\",\n    \"leaderEmail\": \"harasdii@asd.asasdd (Description for leaderEmail)\",\n    \"psId\": \"SIH1613 (Description for psId)\",\n    \"teamMembers\": \"asd, asd, asd (Description for teamMembers)\",\n    \"docLink\": \"http://asd.asd (Description for docLink)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/addTeamDetails",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "addTeamDetails"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/addTeamDetails."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get Team Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/getTeamDetails",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "getTeamDetails"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/getTeamDetails."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Presentation Link",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"team_id\": \"17 (Description for team_id)\",\n    \"video_link\": \"http://asasdads.asd (Description for video_link)\",\n    \"institution_id\": \"42 (Description for institution_id)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/videoLink",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "videoLink"
+                                    ]
+                                },
+                                "description": "This endpoint uses the PUT method to interact with {{base_url}}/videoLink."
+                            },
+                            "response": []
+                        }
+                    ],
+                    "auth": {
+                        "type": "apikey",
+                        "apikey": [
+                            {
+                                "key": "value",
+                                "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJBVTExMiIsImluc3RpdHV0aW9uVHlwZSI6IlVuaXZlcnNpdHkiLCJhZGRyZXNzIjoiMSwgUkFNQUtSSVNITkEgTkFHQVIiLCJjaXR5IjoiQVBQQUtVREFMIiwic3RhdGUiOiJUYW1pbCBOYWR1IiwicGluY29kZSI6IjYzODMxNSIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc2MDg4OTgsImV4cCI6MTczNzYyMzI5OH0.iyTSvTFak6aOAwcscTHLavMWmNgpLeSBw6-zOFGeHl0",
+                                "type": "string"
+                            },
+                            {
+                                "key": "key",
+                                "value": "Authorization",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "event": [
+                        {
+                            "listen": "prerequest",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        },
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "packages": {},
+                                "exec": [
+                                    ""
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ProblemStatements",
+                    "item": [
+                        {
+                            "name": "Get Problem Statements",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/ps",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/ps."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Finalists",
+                    "item": [
+                        {
+                            "name": "Get Finalist",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/finalist/getFinalist",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "finalist",
+                                        "getFinalist"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/finalist/getFinalist."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Notification",
+                    "item": [
+                        {
+                            "name": "Get Notification",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/notification",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "notification"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/notification."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Event Details",
+                    "item": [
+                        {
+                            "name": "Get Event Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/events",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "events"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/events."
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ],
+            "description": "The `/me` endpoints let you manage information about the authenticated user.",
+            "auth": {
+                "type": "apikey",
+                "apikey": [
+                    {
+                        "key": "value",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJBVTExMiIsImluc3RpdHV0aW9uVHlwZSI6IlVuaXZlcnNpdHkiLCJhZGRyZXNzIjoiMSwgUkFNQUtSSVNITkEgTkFHQVIiLCJjaXR5IjoiQVBQQUtVREFMIiwic3RhdGUiOiJUYW1pbCBOYWR1IiwicGluY29kZSI6IjYzODMxNSIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc2MDg4OTgsImV4cCI6MTczNzYyMzI5OH0.iyTSvTFak6aOAwcscTHLavMWmNgpLeSBw6-zOFGeHl0",
+                        "type": "string"
+                    },
+                    {
+                        "key": "key",
+                        "value": "Authorization",
+                        "type": "string"
+                    }
+                ]
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin",
+            "item": [
+                {
+                    "name": "Auth",
+                    "item": [
+                        {
+                            "name": "Login",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"admin (Description for username)\",\n    \"password\": \"admin123 (Description for password)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/login",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "login"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/login."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "New Admin User",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"username\": \"saiik (Description for username)\",\n    \"password\": \"sai12345 (Description for password)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/newUser/admin",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "newUser",
+                                        "admin"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/newUser/admin."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Problem Statements",
+                    "item": [
+                        {
+                            "name": "Get Problem Statements",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/ps",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/ps."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Get PS Registration Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/ps/registration/SIH1613",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps",
+                                        "registration",
+                                        "SIH1613"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/ps/registration/SIH1613."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create Problem Statement",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"psId\": \"SIH1618 (Description for psId)\",\n    \"category\": \"software (Description for category)\",\n    \"title\": \"asa (Description for title)\",\n    \"description\": \"1234567890 (Description for description)\",\n    \"organization\": \"asdsdasa (Description for organization)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/ps/",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps",
+                                        ""
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/ps/."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Upload Problem Statements",
+                            "event": [
+                                {
+                                    "listen": "test",
+                                    "script": {
+                                        "exec": [
+                                            "var template = `\r",
+                                            "<style type=\"text/css\">\r",
+                                            "    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+                                            "    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+                                            "    .tftable tr {background-color:#ffffff;}\r",
+                                            "    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+                                            "    .tftable tr:hover {background-color:#e0ffff;}\r",
+                                            "</style>\r",
+                                            "\r",
+                                            "<table class=\"tftable\" border=\"1\">\r",
+                                            "    <tr>\r",
+                                            "        <th>Status</th>\r",
+                                            "        <th>Message</th>\r",
+                                            "    </tr>\r",
+                                            "    <tr>\r",
+                                            "        <td>{{response.status}}</td>\r",
+                                            "        <td>{{response.message}}</td>\r",
+                                            "    </tr>\r",
+                                            "</table>\r",
+                                            "`;\r",
+                                            "\r",
+                                            "function constructVisualizerPayload() {\r",
+                                            "    return {response: pm.response.json()}\r",
+                                            "}\r",
+                                            "\r",
+                                            "pm.visualizer.set(template, constructVisualizerPayload());"
+                                        ],
+                                        "type": "text/javascript",
+                                        "packages": {}
+                                    }
+                                }
+                            ],
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "[\r\n{\r\n    \"psId\": \"SIH1619\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n},\r\n{\r\n    \"psId\": \"SIH1620\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n},\r\n{\r\n    \"psId\": \"SIH1625\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n}\r\n]",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/ps/upload",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps",
+                                        "upload"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/ps/upload."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Problem Statements",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"['123', 'SIH1618', 'SIH1619', 'SIH1620', 'SIH1625'] (Description for id)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/ps/delete",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "ps",
+                                        "delete"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/ps/delete."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Institute",
+                    "item": [
+                        {
+                            "name": "Get All Institutions",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/institute",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "institute"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/institute."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create Institution",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"instituteCode\": \"institution_codee (Description for instituteCode)\",\n    \"instituteName\": \"institution_name (Description for instituteName)\",\n    \"instituteType\": \"institution_type (Description for instituteType)\",\n    \"instituteAddress\": \"address (Description for instituteAddress)\",\n    \"instituteCity\": \"city (Description for instituteCity)\",\n    \"instituteState\": \"state (Description for instituteState)\",\n    \"institutePincode\": \"123456 (Description for institutePincode)\",\n    \"pocName\": \"poc_name (Description for pocName)\",\n    \"pocEmail\": \"poc_email@email.com (Description for pocEmail)\",\n    \"pocPhone\": \"1234567890 (Description for pocPhone)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/addInstitute",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "addInstitute"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/addInstitute."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Institution",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"46 (Description for id)\",\n    \"institution_code\": \"institution_code (Description for institution_code)\",\n    \"institution_name\": \"institution_name (Description for institution_name)\",\n    \"institution_type\": \"institution_type (Description for institution_type)\",\n    \"address\": \"address (Description for address)\",\n    \"city\": \"city (Description for city)\",\n    \"state\": \"state (Description for state)\",\n    \"pincode\": \"123456 (Description for pincode)\",\n    \"poc_name\": \"poc_name (Description for poc_name)\",\n    \"poc_email\": \"email@email.com (Description for poc_email)\",\n    \"poc_number\": \"1234567890 (Description for poc_number)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/institute",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "institute"
+                                    ]
+                                },
+                                "description": "This endpoint uses the PUT method to interact with {{base_url}}/institute."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Institution",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"44 (Description for id)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/institute/delete",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "institute",
+                                        "delete"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/institute/delete."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Rounds",
+                    "item": [
+                        {
+                            "name": "Submitted Round",
+                            "item": [
+                                {
+                                    "name": "Get Submitted List",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/submittedList",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "submittedList"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the GET method to interact with {{base_url}}/submittedList."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Demoted to Submitted",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"20 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/backtoSubmitted",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "backtoSubmitted"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/backtoSubmitted."
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Presentation Round",
+                            "item": [
+                                {
+                                    "name": "Get Presentation List",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/presentation",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "presentation"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the GET method to interact with {{base_url}}/presentation."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Promoted to Presentation",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"5 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/presentation/toPresentation",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "presentation",
+                                                "toPresentation"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/presentation/toPresentation."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Demoted to Presentation",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"6 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/presentation/backtoPresentation",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "presentation",
+                                                "backtoPresentation"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/presentation/backtoPresentation."
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Finalist Round(Participation)",
+                            "item": [
+                                {
+                                    "name": "Get Finalist Admin",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/finalist/",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "finalist",
+                                                ""
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the GET method to interact with {{base_url}}/finalist/."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Promoted to Participation",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"5 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/finalist/toParticipation",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "finalist",
+                                                "toParticipation"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/finalist/toParticipation."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Demoted to Participation",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"5 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/finalist/backtoParticipation",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "finalist",
+                                                "backtoParticipation"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/finalist/backtoParticipation."
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        },
+                        {
+                            "name": "Winner Round",
+                            "item": [
+                                {
+                                    "name": "Get Winner List",
+                                    "request": {
+                                        "method": "GET",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "url": {
+                                            "raw": "{{base_url}}/winner/",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "winner",
+                                                ""
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the GET method to interact with {{base_url}}/winner/."
+                                    },
+                                    "response": []
+                                },
+                                {
+                                    "name": "Promote to Winner",
+                                    "request": {
+                                        "method": "POST",
+                                        "header": [
+                                            {
+                                                "key": "Origin",
+                                                "value": "{{origin}}",
+                                                "type": "text",
+                                                "description": "The Origin header is required for request authentication or other purposes."
+                                            }
+                                        ],
+                                        "body": {
+                                            "mode": "raw",
+                                            "raw": "{\n    \"team_id\": \"5 (Description for team_id)\"\n}",
+                                            "options": {
+                                                "raw": {
+                                                    "language": "json"
+                                                }
+                                            },
+                                            "description": "The request body contains the following parameters:"
+                                        },
+                                        "url": {
+                                            "raw": "{{base_url}}/winner/toWinner",
+                                            "host": [
+                                                "{{base_url}}"
+                                            ],
+                                            "path": [
+                                                "winner",
+                                                "toWinner"
+                                            ]
+                                        },
+                                        "description": "This endpoint uses the POST method to interact with {{base_url}}/winner/toWinner."
+                                    },
+                                    "response": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Event Administration",
+                    "item": [
+                        {
+                            "name": "Get Event Details",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/events",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "events"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/events."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Update Event Details",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"eventDate\": \"2026-03-12 (Description for eventDate)\",\n    \"eventVenue\": \"hello (Description for eventVenue)\",\n    \"finalRoundDate\": \"2026-03-12 (Description for finalRoundDate)\",\n    \"resultsDate\": \"2026-03-12 (Description for resultsDate)\",\n    \"prizeMoney\": \"Hello  (Description for prizeMoney)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/events",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "events"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/events."
+                            },
+                            "response": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Notification",
+                    "item": [
+                        {
+                            "name": "Get Notification",
+                            "request": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "{{base_url}}/notification",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "notification"
+                                    ]
+                                },
+                                "description": "This endpoint uses the GET method to interact with {{base_url}}/notification."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Create Notification",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"title\": \"title (Description for title)\",\n    \"description\": \"description (Description for description)\",\n    \"type\": \"type (Description for type)\",\n    \"date\": \"2525-02-31 (Description for date)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/notification",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "notification"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/notification."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Edit Notification",
+                            "request": {
+                                "method": "PUT",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"7 (Description for id)\",\n    \"title\": \"asd (Description for title)\",\n    \"description\": \"fg (Description for description)\",\n    \"type\": \"xcerf (Description for type)\",\n    \"date\": \"2026-12-12 (Description for date)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/notification",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "notification"
+                                    ]
+                                },
+                                "description": "This endpoint uses the PUT method to interact with {{base_url}}/notification."
+                            },
+                            "response": []
+                        },
+                        {
+                            "name": "Delete Notification",
+                            "request": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Origin",
+                                        "value": "{{origin}}",
+                                        "type": "text",
+                                        "description": "The Origin header is required for request authentication or other purposes."
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"id\": \"7 (Description for id)\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    },
+                                    "description": "The request body contains the following parameters:"
+                                },
+                                "url": {
+                                    "raw": "{{base_url}}/notification/delete",
+                                    "host": [
+                                        "{{base_url}}"
+                                    ],
+                                    "path": [
+                                        "notification",
+                                        "delete"
+                                    ]
+                                },
+                                "description": "This endpoint uses the POST method to interact with {{base_url}}/notification/delete."
+                            },
+                            "response": []
+                        }
+                    ]
+                }
+            ],
+            "description": "The `/collections` endpoints let you manage your [collections](https://learning.postman.com/docs/sending-requests/intro-to-collections/).",
+            "auth": {
+                "type": "apikey",
+                "apikey": [
+                    {
+                        "key": "value",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaW5zdGl0dXRpb25JZCI6MiwiaWF0IjoxNzM3Njk0OTQ0LCJleHAiOjE3Mzc3MDkzNDR9.XeGrvSkYzJMvr5skybb6hP7cYSLxl8ZETtgtg4th4Wc",
+                        "type": "string"
+                    },
+                    {
+                        "key": "key",
+                        "value": "Authorization",
+                        "type": "string"
+                    }
+                ]
+            },
+            "event": [
+                {
+                    "listen": "prerequest",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                },
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "packages": {},
+                        "exec": [
+                            ""
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "apikey",
+        "apikey": [
+            {
+                "key": "key",
+                "value": "X-API-Key",
+                "type": "string"
+            },
+            {
+                "key": "value",
+                "value": "{{token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "https://w2tpzms2-4500.inc1.devtunnels.ms/api",
+            "type": "string"
+        },
+        {
+            "key": "origin",
+            "value": "https://w2tpzms2-5173.inc1.devtunnels.ms/api",
+            "type": "string"
+        }
+    ]
+}
