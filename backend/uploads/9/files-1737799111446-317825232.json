@@ -1,0 +1,1526 @@
+{
+	"info": {
+		"_postman_id": "e3d5cd03-2001-47ae-b8d6-e99ed13c5d6a",
+		"name": "API Documentation #reference",
+		"description": "This template contains a boilerplate for documentation that you can quickly customize and reuse.\n\n### How to use this template:\n\n- Replace the content given brackets (()) with your API's details.\n- Tips are formatted in `codespan` - feel free to read and remove them.\n    \n\n---\n\n`Start with a brief overview of what your API offers.`\n\nThe ((product name)) provides many API products, tools, and resources that enable you to ((add product value here)).\n\n`You can also list the APIs you offer, link to the relevant pages, or do both in this section.`\n\n## **Getting started guide**\n\n`List the steps or points required to start using your APIs. Make sure to cover everything required to reach success with your API as quickly as possible.`\n\nTo start using the ((add APIs here)), you need to -\n\n`The points given below are from The Postman API's documentation. You can reference it to write your own getting started guide.`\n\n- You must use a valid API Key to send requests to the API endpoints. You can get your API key from Postman's [integrations dashboard](https://go.postman.co/settings/me/api-keys).\n- The API has [rate and usage limits](https://learning.postman.com/docs/developer/postman-api/postman-api-rate-limits/).\n- The API only responds to HTTPS-secured communications. Any requests sent via HTTP return an HTTP 301 redirect to the corresponding HTTPS resources.\n- The API returns request responses in JSON format. When an API request returns an error, it is sent in the JSON response as an error key.\n    \n\n## Authentication\n\n`Add details on the authorization keys/tokens required, steps that cover how to get them, and the relevant error codes.`\n\nThe ((product name)) API uses ((add your API's authorization type)) for authentication.\n\n`The details given below are from the Postman API's documentation. You can reference it to write your own authentication section.`\n\nPostman uses API keys for authentication. You can generate a Postman API key in the [API keys](https://postman.postman.co/settings/me/api-keys) section of your Postman account settings.\n\nYou must include an API key in each request to the Postman API with the X-Api-Key request header.\n\n### Authentication error response\n\nIf an API key is missing, malformed, or invalid, you will receive an HTTP 401 Unauthorized response code.\n\n## Rate and usage limits\n\n`Use this section to cover your APIs' terms of use. Include API limits, constraints, and relevant error codes, so consumers understand the permitted API usage and practices.`\n\n`The example given below is from The Postman API's documentation. Use it as a reference to write your APIs' terms of use.`\n\nAPI access rate limits apply at a per-API key basis in unit time. The limit is 300 requests per minute. Also, depending on your plan, you may have usage limits. If you exceed either limit, your request will return an HTTP 429 Too Many Requests status code.\n\nEach API response returns the following set of headers to help you identify your use status:\n\n| Header | Description |\n| --- | --- |\n| `X-RateLimit-Limit` | The maximum number of requests that the consumer is permitted to make per minute. |\n| `X-RateLimit-Remaining` | The number of requests remaining in the current rate limit window. |\n| `X-RateLimit-Reset` | The time at which the current rate limit window resets in UTC epoch seconds. |\n\n### 503 response\n\nAn HTTP `503` response from our servers indicates there is an unexpected spike in API access traffic. The server is usually operational within the next five minutes. If the outage persists or you receive any other form of an HTTP `5XX` error, [contact support](https://support.postman.com/hc/en-us/requests/new/).\n\n### **Need some help?**\n\n`Add links that customers can refer to whenever they need help.`\n\nIn case you have questions, go through our tutorials ((link to your video or help documentation here)). Or visit our FAQ page ((link to the relevant page)).\n\nOr you can check out our community forum, there’s a good chance our community has an answer for you. Visit our developer forum ((link to developer forum)) to review topics, ask questions, and learn from others.\n\n`You can also document or add links to libraries, code examples, and other resources needed to make a request.`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29525622",
+		"_collection_link": "https://hackathon-tansche.postman.co/workspace/TANSCHE-Hackathon-~3f291c4d-e2e8-48d1-a849-fd4215ec2d9c/collection/29525622-e3d5cd03-2001-47ae-b8d6-e99ed13c5d6a?action=share&source=collection_link&creator=29525622"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Welcome",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"instituteCode\": \"SIH456\",\r\n    \"instituteName\": \"Sample Institute name\",\r\n    \"instituteAddress\": \"sample address of institute\",\r\n    \"instituteCity\": \"sample city of institute\",\r\n    \"instituteState\": \"sample state of institute\",\r\n    \"institutePincode\": 123456,\r\n    \"instituteType\": \"Engineering\",\r\n    \"pocName\": \"po contant name\",\r\n    \"pocEmail\": \"mail@mail.com\",\r\n    \"pocPhone\": 1234567890,\r\n    \"password\": \"abcd1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"poc_email@email.com\",\r\n    \"password\": \"HC&C62hP\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Suggestion name",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/suggestions/name?query=nandha",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"suggestions",
+										"name"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "nandha"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get User",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJTSUg0NTYiLCJpbnN0aXR1dGlvblR5cGUiOiJFbmdpbmVlcmluZyIsImFkZHJlc3MiOiJzYW1wbGUgYWRkcmVzcyBvZiBpbnN0aXR1dGUiLCJjaXR5Ijoic2FtcGxlIGNpdHkgb2YgaW5zdGl0dXRlIiwic3RhdGUiOiJzYW1wbGUgc3RhdGUgb2YgaW5zdGl0dXRlIiwicGluY29kZSI6IjEyMzQ1NiIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc1MzY0NTUsImV4cCI6MTczNzU1MDg1NX0.HSUXVBFOr2H2UUe4Q4dS-FQpwMfApc4xUK36n2U08fI"
+									},
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/getUser",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"getUser"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Suggesstion Code",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/suggestions/code?query=au",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"suggestions",
+										"code"
+									],
+									"query": [
+										{
+											"key": "query",
+											"value": "au"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Institute Data",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/institute-data/au13",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"institute-data",
+										"au13"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Get Institute Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "https://w2tpzms2-5173.inc1.devtunnels.ms/"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/getInstituteDetails",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"getInstituteDetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Institute Details",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJTSUg0NTYiLCJpbnN0aXR1dGlvblR5cGUiOiJFbmdpbmVlcmluZyIsImFkZHJlc3MiOiJzYW1wbGUgYWRkcmVzcyBvZiBpbnN0aXR1dGUiLCJjaXR5Ijoic2FtcGxlIGNpdHkgb2YgaW5zdGl0dXRlIiwic3RhdGUiOiJzYW1wbGUgc3RhdGUgb2YgaW5zdGl0dXRlIiwicGluY29kZSI6IjEyMzQ1NiIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc1MzY0NTUsImV4cCI6MTczNzU1MDg1NX0.HSUXVBFOr2H2UUe4Q4dS-FQpwMfApc4xUK36n2U08fI",
+										"disabled": true
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 42,\r\n    \"institution_code\": \"AU112\",\r\n    \"institution_name\":\"NANDHA ARTS AND SCIENCE COLLEGE\",\r\n    \"institution_type\":\"University\",\r\n    \"address\":\"1, RAMAKRISHNA NAGAR\",\r\n    \"city\":\"APPAKUDAL\",\r\n    \"state\":\"Tamil Nadu\",\r\n    \"pincode\":\"638315\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/updateInstituteDetails",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"updateInstituteDetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Team",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"institutionId\": 42 ,\r\n    \"teamName\": \"sample khasbasdd\",\r\n    \"participants\": 1,\r\n    \"leaderName\": \"hari\",\r\n    \"leaderEmail\": \"harasdii@asd.asasdd\",\r\n    \"psId\": \"SIH1613\",\r\n    \"teamMembers\": \"asd, asd, asd\",\r\n    \"docLink\":\"http://asd.asd\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/addTeamDetails",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"addTeamDetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Team Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/getTeamDetails",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"getTeamDetails"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Presentation Link",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"team_id\":17,\r\n    \"video_link\":\"http://asasdads.asd\",\r\n    \"institution_id\":42\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/videoLink",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"videoLink"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "apikey",
+						"apikey": [
+							{
+								"key": "value",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJBVTExMiIsImluc3RpdHV0aW9uVHlwZSI6IlVuaXZlcnNpdHkiLCJhZGRyZXNzIjoiMSwgUkFNQUtSSVNITkEgTkFHQVIiLCJjaXR5IjoiQVBQQUtVREFMIiwic3RhdGUiOiJUYW1pbCBOYWR1IiwicGluY29kZSI6IjYzODMxNSIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc2MDg4OTgsImV4cCI6MTczNzYyMzI5OH0.iyTSvTFak6aOAwcscTHLavMWmNgpLeSBw6-zOFGeHl0",
+								"type": "string"
+							},
+							{
+								"key": "key",
+								"value": "Authorization",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"packages": {},
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "ProblemStatements",
+					"item": [
+						{
+							"name": "Get Problem Statements",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ps",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Finalists",
+					"item": [
+						{
+							"name": "Get Finalist",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/finalist/getFinalist",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"finalist",
+										"getFinalist"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notification",
+					"item": [
+						{
+							"name": "Get Notification",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/notification",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"notification"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Event Details",
+					"item": [
+						{
+							"name": "Get Event Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/events",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"events"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "The `/me` endpoints let you manage information about the authenticated user.",
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1haWxAbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImluc3RpdHV0aW9uSWQiOjQyLCJpbnN0aXR1dGlvbkNvZGUiOiJBVTExMiIsImluc3RpdHV0aW9uVHlwZSI6IlVuaXZlcnNpdHkiLCJhZGRyZXNzIjoiMSwgUkFNQUtSSVNITkEgTkFHQVIiLCJjaXR5IjoiQVBQQUtVREFMIiwic3RhdGUiOiJUYW1pbCBOYWR1IiwicGluY29kZSI6IjYzODMxNSIsInBvY05hbWUiOiJwbyBjb250YW50IG5hbWUiLCJwb2NFbWFpbCI6Im1haWxAbWFpbC5jb20iLCJpYXQiOjE3Mzc2MDg4OTgsImV4cCI6MTczNzYyMzI5OH0.iyTSvTFak6aOAwcscTHLavMWmNgpLeSBw6-zOFGeHl0",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "Authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Admin User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"saiik\",\r\n    \"password\":\"sai12345\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/newUser/admin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"newUser",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Problem Statements",
+					"item": [
+						{
+							"name": "Get Problem Statements",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ps",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get PS Registration Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/ps/registration/SIH1613",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps",
+										"registration",
+										"SIH1613"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Problem Statement",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"psId\": \"SIH1618\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/ps/",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Problem Statements",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var template = `\r",
+											"<style type=\"text/css\">\r",
+											"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+											"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+											"    .tftable tr {background-color:#ffffff;}\r",
+											"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+											"    .tftable tr:hover {background-color:#e0ffff;}\r",
+											"</style>\r",
+											"\r",
+											"<table class=\"tftable\" border=\"1\">\r",
+											"    <tr>\r",
+											"        <th>Status</th>\r",
+											"        <th>Message</th>\r",
+											"    </tr>\r",
+											"    <tr>\r",
+											"        <td>{{response.status}}</td>\r",
+											"        <td>{{response.message}}</td>\r",
+											"    </tr>\r",
+											"</table>\r",
+											"`;\r",
+											"\r",
+											"function constructVisualizerPayload() {\r",
+											"    return {response: pm.response.json()}\r",
+											"}\r",
+											"\r",
+											"pm.visualizer.set(template, constructVisualizerPayload());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n{\r\n    \"psId\": \"SIH1619\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n},\r\n{\r\n    \"psId\": \"SIH1620\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n},\r\n{\r\n    \"psId\": \"SIH1625\",\r\n    \"category\":\"software\",\r\n    \"title\":\"asa\",\r\n    \"description\":\"1234567890\",\r\n    \"organization\":\"asdsdasa\"\r\n}\r\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/ps/upload",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps",
+										"upload"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Problem Statements",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": [\"123\", \"SIH1618\", \"SIH1619\", \"SIH1620\", \"SIH1625\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/ps/delete",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"ps",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Institute",
+					"item": [
+						{
+							"name": "Get All Institutions",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/institute",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"institute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Institution",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"instituteCode\": \"institution_codee\",\r\n    \"instituteName\": \"institution_name\",\r\n    \"instituteType\": \"institution_type\",\r\n    \"instituteAddress\": \"address\",\r\n    \"instituteCity\": \"city\",\r\n    \"instituteState\": \"state\",\r\n    \"institutePincode\": 123456,\r\n    \"pocName\": \"poc_name\",\r\n    \"pocEmail\": \"poc_email@email.com\",\r\n    \"pocPhone\": 1234567890\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/addInstitute",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"addInstitute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Institution",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":46,\r\n    \"institution_code\": \"institution_code\",\r\n    \"institution_name\": \"institution_name\",\r\n    \"institution_type\": \"institution_type\",\r\n    \"address\": \"address\",\r\n    \"city\": \"city\",\r\n    \"state\": \"state\",\r\n    \"pincode\": 123456,\r\n    \"poc_name\": \"poc_name\",\r\n    \"poc_email\": \"email@email.com\",\r\n    \"poc_number\": 1234567890\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/institute",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"institute"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Institution",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 44\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/institute/delete",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"institute",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rounds",
+					"item": [
+						{
+							"name": "Submitted Round",
+							"item": [
+								{
+									"name": "Get Submitted List",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/submittedList",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"submittedList"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Demoted to Submitted",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\": 20\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/backtoSubmitted",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"backtoSubmitted"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Presentation Round",
+							"item": [
+								{
+									"name": "Get Presentation List",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/presentation",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"presentation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Promoted to Presentation",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\":5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/presentation/toPresentation",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"presentation",
+												"toPresentation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Demoted to Presentation",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\": 6\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/presentation/backtoPresentation",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"presentation",
+												"backtoPresentation"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Finalist Round(Participation)",
+							"item": [
+								{
+									"name": "Get Finalist Admin",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/finalist/",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"finalist",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Promoted to Participation",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\": 5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/finalist/toParticipation",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"finalist",
+												"toParticipation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Demoted to Participation",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\": 5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/finalist/backtoParticipation",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"finalist",
+												"backtoParticipation"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Winner Round",
+							"item": [
+								{
+									"name": "Get Winner List",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/winner/",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"winner",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Promote to Winner",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Origin",
+												"value": "{{origin}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"team_id\": 5\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/winner/toWinner",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"winner",
+												"toWinner"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Event Administration",
+					"item": [
+						{
+							"name": "Get Event Details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/events",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Event Details",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"eventDate\":\"2026-03-12\",\r\n    \"eventVenue\":\"hello\",\r\n    \"finalRoundDate\":\"2026-03-12\",\r\n    \"resultsDate\":\"2026-03-12\",\r\n    \"prizeMoney\":\"Hello \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/events",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"events"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notification",
+					"item": [
+						{
+							"name": "Get Notification",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/notification",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"notification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Notification",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"title\",\r\n    \"description\": \"description\",\r\n    \"type\": \"type\",\r\n    \"date\": \"2525-02-31\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/notification",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"notification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Edit Notification",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\":7,\r\n    \"title\":\"asd\",\r\n    \"description\":\"fg\",\r\n    \"type\":\"xcerf\",\r\n    \"date\":\"2026-12-12\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/notification",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"notification"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Notification",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 7\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/notification/delete",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"notification",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "The `/collections` endpoints let you manage your [collections](https://learning.postman.com/docs/sending-requests/intro-to-collections/).",
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6ImFkbWluIiwiaW5zdGl0dXRpb25JZCI6MiwiaWF0IjoxNzM3Njk0OTQ0LCJleHAiOjE3Mzc3MDkzNDR9.XeGrvSkYzJMvr5skybb6hP7cYSLxl8ZETtgtg4th4Wc",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "Authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "X-API-Key",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://w2tpzms2-4500.inc1.devtunnels.ms/api",
+			"type": "string"
+		},
+		{
+			"key": "origin",
+			"value": "https://w2tpzms2-5173.inc1.devtunnels.ms/api",
+			"type": "string"
+		}
+	]
+}

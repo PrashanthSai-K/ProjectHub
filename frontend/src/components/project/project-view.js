@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import ProjectForm from "./project-form"
+import ProjectForm from "./project-create-form"
 import ProjectList from "./project-list"
 import { Button } from "@/components/ui/button"
 

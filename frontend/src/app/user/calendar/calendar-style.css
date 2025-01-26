@@ -1,0 +1,50 @@
+.fc {
+    font-size: 0.9em;
+  }
+  
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5em;
+    flex-wrap: wrap;
+  }
+  
+  .fc .fc-toolbar-title {
+    font-size: 1.2em;
+  }
+  
+  .fc .fc-button {
+    padding: 0.3em 0.5em;
+    font-size: 0.9em;
+  }
+  
+  @media (max-width: 768px) {
+    .fc .fc-toolbar.fc-header-toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .fc .fc-toolbar-title {
+      text-align: center;
+      margin: 0.5em 0;
+    }
+  
+    .fc .fc-button-group {
+      justify-content: center;
+    }
+  }
+  
+  .fc-event {
+    cursor: pointer;
+  }
+  
+  .fc-event-title {
+    font-size: 0.8em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .fc-day-today {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+  
+  

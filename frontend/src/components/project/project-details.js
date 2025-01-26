@@ -11,13 +11,9 @@ import { EditProjectSidebar } from "@/components/project/edit-project-sidebar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export default function ProjectDetails({ project: initialProject, tasks, messages }) {
+export default function ProjectDetails({ project: initialProject, tasks, messages, fetchProjectData }) {
   const [project, setProject] = useState(initialProject)
   const [isChatOpen, setIsChatOpen] = useState(false)
-
-  const handleProjectUpdated = (updatedProject) => {
-    setProject(updatedProject)
-  }
 
   return (
     <div className="space-y-6">
@@ -77,7 +73,7 @@ export default function ProjectDetails({ project: initialProject, tasks, message
       )}
 
       <ChatButton onClick={() => setIsChatOpen(!isChatOpen)} />
-      <EditProjectSidebar project={project} onProjectUpdated={handleProjectUpdated} />
+      <EditProjectSidebar project={project} fetchProjectData={fetchProjectData} />
     </div>
   )
 }

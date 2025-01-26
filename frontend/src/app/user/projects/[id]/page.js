@@ -2,42 +2,46 @@
 import Layout from "@/components/project/layout";
 import ProjectDetails from "@/components/project/project-details";
 import projectService from "@/services/project-service";
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 
 
-export default function Project({ params }) {
+export default function Project() {
+
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
+    const params = useParams();
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null);
 
+    const fetchProjectData = async () => {
+        try {
+            if (!params || !params.id) {
+                throw new Error('Invalid route parameters');
+            }
+
+            const projectId = Number.parseInt(params.id, 10);
+
+            if (isNaN(projectId)) {
+                throw new Error('Invalid project ID');
+            }
+            const projectData = await projectService.getProjectById(projectId);
+            setProject(projectData);
+            // Assuming your backend returns tasks and messages as part of the project response
+            setTasks(projectData.tasks || []);
+            setMessages(projectData.chats || []);
+        }
+        catch (error) {
+            console.error('Error fetching project:', error);
+            setError(error.message || 'Failed to load project');
+        } finally {
+            setLoading(false)
+        }
+    };
+
+
     useEffect(() => {
-        const fetchProjectData = async () => {
-            try {
-                if (!params || !params.id) {
-                    throw new Error('Invalid route parameters');
-                }
-
-                const projectId = Number.parseInt(params.id, 10);
-
-                if (isNaN(projectId)) {
-                    throw new Error('Invalid project ID');
-                }
-                const projectData = await projectService.getProjectById(projectId);
-                setProject(projectData);
-                // Assuming your backend returns tasks and messages as part of the project response
-                setTasks(projectData.tasks || []);
-                setMessages(projectData.chats || []);
-            }
-            catch (error) {
-                console.error('Error fetching project:', error);
-                setError(error.message || 'Failed to load project');
-            } finally {
-                setLoading(false)
-            }
-        };
-
         fetchProjectData();
     }, [params]);
 
@@ -68,7 +72,7 @@ export default function Project({ params }) {
         <Layout>
             <div className="space-y-6">
                 <h2 className="text-3xl font-bold">Project Details</h2>
-                <ProjectDetails project={project} tasks={tasks} messages={messages} />
+                <ProjectDetails project={project} fetchProjectData={fetchProjectData} tasks={tasks} messages={messages} />
             </div>
         </Layout>
     );

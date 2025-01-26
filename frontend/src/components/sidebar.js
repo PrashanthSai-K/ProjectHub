@@ -4,11 +4,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, ListTodo, Calendar, Settings, PlusCircle } from "lucide-react"
+import { LayoutDashboard, ListTodo, Calendar, Settings, PlusCircle, Compass } from "lucide-react"
 
 const sidebarItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Projects", href: "/user/projects", icon: ListTodo },
+  { name: "Explore", href: "/user/explore", icon: Compass },
   { name: "Calendar", href: "/user/calendar", icon: Calendar },
   { name: "Settings", href: "/user/settings", icon: Settings },
 ]

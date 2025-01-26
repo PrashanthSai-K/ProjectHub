@@ -5,15 +5,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { useToast } from "@/hooks/use-toast"
+import projectService from "@/services/project-service"
 
-import  projectService  from "@/services/project-service"; // Make sure this path is correct
+export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
 
-
-export default function ProjectForm({ initialData, onProjectCreated }) {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -23,23 +20,27 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
         priority: "",
         teamMembers: [],
         budget: "",
-        status: "Not Started",
+        status: "",
         milestones: "",
-    });
+    })
+
+    const { toast } = useToast();
 
     useEffect(() => {
         if (initialData) {
-            setFormData(initialData);
+            setFormData({
+                ...initialData,
+                startDate: initialData.start_date ? new Date(initialData.start_date).toISOString().split("T")[0] : "",
+                endDate: initialData.end_date ? new Date(initialData.end_date).toISOString().split("T")[0] : "",
+                teamMembers: Array.isArray(initialData.team_members)
+                    ? initialData.team_members
+                    : JSON.parse(initialData.team_members || "[]"),
+            })
         }
-    }, [initialData]);
-
+    }, [initialData])
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
-    }
-
-    const handleSelectChange = (name, value) => {
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
 
@@ -53,32 +54,21 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log("Project submitted:", formData)
+        e.preventDefault()
+
         try {
-            const createdProject = await projectService.createProject(formData); // pass formData only
-            // onProjectCreated(createdProject); // Notify parent of the new project
-            if (!initialData) {
-                setFormData({
-                    title: "",
-                    description: "",
-                    department: "",
-                    startDate: "",
-                    endDate: "",
-                    priority: "",
-                    teamMembers: [],
-                    budget: "",
-                    status: "Not Started",
-                    milestones: "",
-                });
+            const response = await projectService.updateProject(initialData.id, formData)
+            if (response) {
+                toast.success("Project updated successfully!")
+                onProjectCreated()
+            } else {
+                toast.error("Failed to update project. Please try again.")
             }
         } catch (error) {
-            console.error("Error creating project:", error);
-           
+            toast.error("Failed to update project. Please try again.")
+            console.error("Error updating project:", error)
         }
-    };
-
-
+    }
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4 w-full">
@@ -111,20 +101,20 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
             </div>
             <div>
                 <Label htmlFor="priority">Priority</Label>
-                <Select
+                <select
+                    id="priority"
                     name="priority"
                     value={formData.priority}
-                    onValueChange={(value) => handleSelectChange("priority", value)}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm leading-5 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select priority" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Low">Low</SelectItem>
-                        <SelectItem value="Medium">Medium</SelectItem>
-                        <SelectItem value="High">High</SelectItem>
-                    </SelectContent>
-                </Select>
+                    <option value="" disabled>
+                        Select priority
+                    </option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
             </div>
             <div>
                 <Label>Team Members</Label>
@@ -141,7 +131,6 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
                     ))}
                 </div>
             </div>
-            
             <div>
                 <Label htmlFor="budget">Budget</Label>
                 <Input
@@ -155,16 +144,20 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
             </div>
             <div>
                 <Label htmlFor="status">Status</Label>
-                <Select name="status" value={formData.status} onValueChange={(value) => handleSelectChange("status", value)}>
-                    <SelectTrigger>
-                        <SelectValue placeholder="Select status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="Not Started">Not Started</SelectItem>
-                        <SelectItem value="In Progress">In Progress</SelectItem>
-                        <SelectItem value="Completed">Completed</SelectItem>
-                    </SelectContent>
-                </Select>
+                <select
+                    id="status"
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-sm leading-5 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                >
+                    <option value="" disabled>
+                        Select status
+                    </option>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
             </div>
             <div>
                 <Label htmlFor="milestones">Milestones</Label>
@@ -176,7 +169,8 @@ export default function ProjectForm({ initialData, onProjectCreated }) {
                     placeholder="Enter key milestones, separated by commas"
                 />
             </div>
-             <Button type="submit">{initialData ? "Update Project" : "Create Project"}</Button>
+            <Button type="submit">Update Project</Button>
         </form>
-    );
+    )
 }
+

@@ -4,15 +4,16 @@ import { useState } from "react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Edit } from "lucide-react"
-import ProjectForm from "./project-form"
+import ProjectForm from "./project-create-form"
+import ProjectUpdateForm from "./project-update-form"
 
-export function EditProjectSidebar({ project, onProjectUpdated }) {
+export function EditProjectSidebar({ project, fetchProjectData }) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleProjectUpdated = (updatedProject) => {
-    onProjectUpdated(updatedProject)
-    setIsOpen(false)
-  }
+  const handleProjectUpdated = () => {
+    fetchProjectData();
+    setIsOpen(false);
+  };
 
   return (
     <Sheet className="" open={isOpen} onOpenChange={setIsOpen}>
@@ -22,15 +23,14 @@ export function EditProjectSidebar({ project, onProjectUpdated }) {
           <span className="sr-only">Edit project</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="overflow-y-auto" style={{width:"600px"}}>
+      <SheetContent className="overflow-y-auto" style={{ width: "350px" }}>
         <SheetHeader>
           <SheetTitle>Edit Project</SheetTitle>
         </SheetHeader>
         <div className="mt-4">
-          <ProjectForm initialData={project} onProjectCreated={handleProjectUpdated} />
+          <ProjectUpdateForm initialData={project} onProjectCreated={handleProjectUpdated} />
         </div>
       </SheetContent>
     </Sheet>
   )
 }
-
