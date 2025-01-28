@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,20 +8,116 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+import taskService from "@/services/task-management-service"
+import { useToast } from "@/hooks/use-toast"
 
-export default function TaskManagement({ projectId, initialTasks, teamMembers }) {
-  const [tasks, setTasks] = useState(initialTasks)
-  const [newTask, setNewTask] = useState({ title: "", assignee: "", status: "Not Started" })
+export default function TaskManagement({ projectId, teamMembers, showOnlyMyTasks, userId }) {
+  const [tasks, setTasks] = useState([])
+  const [newTask, setNewTask] = useState({ title: "", assignee: "", status: "Not Started", deadline: undefined })
+  const { toast } = useToast()
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [filteredTasks, setFilteredTasks] = useState([]);
 
-  const handleAddTask = (e) => {
-    e.preventDefault()
-    const task = { ...newTask, id: Date.now() }
-    setTasks([...tasks, task])
-    setNewTask({ title: "", assignee: "", status: "Not Started" })
+  const fetchTasks = async () => {
+    try {
+      setLoading(true)
+      const tasks = await taskService.getTasks(projectId)
+      setTasks(tasks)
+      if (showOnlyMyTasks && userId) {
+        const filtered = tasks.filter(task => task.assignee === userId.toString())
+        setFilteredTasks(filtered)
+      } else {
+        setFilteredTasks(tasks);
+      }
+      setLoading(false)
+    }
+    catch (error) {
+      console.error('Error fetching tasks:', error)
+      setError(error.message || "Failed to load tasks")
+      setLoading(false)
+    }
   }
 
-  const handleTaskChange = (taskId, field, value) => {
-    setTasks(tasks.map((task) => (task.id === taskId ? { ...task, [field]: value } : task)))
+  useEffect(() => {
+    fetchTasks()
+  }, [userId, showOnlyMyTasks])
+
+  const handleAddTask = async (e) => {
+    e.preventDefault()
+    try {
+      const formattedDeadline = newTask.deadline ? format(newTask.deadline, 'yyyy-MM-dd') : null
+      const task = { ...newTask, deadline: formattedDeadline }
+      await taskService.createTask(projectId, task)
+      toast({
+        title: "Task Created",
+        description: "Task Created Successfully"
+      })
+      fetchTasks()
+      setNewTask({ title: "", assignee: "", status: "Not Started", deadline: undefined })
+    }
+    catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to create task",
+        description: error
+      })
+    }
+  }
+
+  const handleTaskChange = async (taskId, field, value) => {
+    try {
+      const updatedTask = tasks.find((task) => task.id === taskId)
+      let taskData = { ...updatedTask, [field]: value }
+      if (field === 'deadline') {
+        taskData = { ...updatedTask, [field]: format(value, 'yyyy-MM-dd') }
+      }
+      await taskService.updateTask(taskId, taskData)
+      setTasks(tasks.map((task) => (task.id === taskId ? { ...task, [field]: value } : task)))
+      toast({
+        title: "Task Updated",
+        description: "Task Updated Successfully"
+      })
+      fetchTasks()
+    }
+    catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to update task",
+        description: error
+      })
+      console.error("Failed to update task", error)
+    }
+  }
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await taskService.deleteTask(taskId)
+      toast({
+        title: "Task Deleted",
+        description: "Task Deleted Successfully"
+      })
+      fetchTasks()
+    }
+    catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Failed to delete task",
+        description: error
+      })
+      console.error("Failed to delete task", error)
+    }
+  }
+  const canModifyTask = !showOnlyMyTasks;
+  if (loading) {
+    return <div>Loading Tasks...</div>
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>
   }
 
   return (
@@ -30,8 +126,8 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
         <CardTitle>Task Management</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleAddTask} className="mb-6 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-3">
+        {canModifyTask && <form onSubmit={handleAddTask} className="mb-6 space-y-4">
+          <div className="grid gap-4 sm:grid-cols-4">
             <div>
               <Label htmlFor="taskTitle">Task Title</Label>
               <Input
@@ -69,10 +165,32 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <Label htmlFor="taskDeadline">Deadline</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant={"outline"}
+                    className={cn(
+                      "w-[240px] justify-start text-left font-normal",
+                      !newTask.deadline && "text-muted-foreground"
+                    )}
+                  >
+                    {newTask.deadline ? format(newTask.deadline, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={newTask.deadline}
+                    onSelect={(date) => setNewTask({ ...newTask, deadline: date })}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
           <Button type="submit">Add Task</Button>
-        </form>
-
+        </form>}
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -80,15 +198,18 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
                 <TableHead>Title</TableHead>
                 <TableHead>Assignee</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead>Deadline</TableHead>
+                {canModifyTask && <TableHead>Action</TableHead>}
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tasks.map((task) => (
+              {filteredTasks.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell>{task.title}</TableCell>
                   <TableCell>
                     <Select
                       value={task.assignee}
+                      disabled={!canModifyTask}
                       onValueChange={(value) => handleTaskChange(task.id, "assignee", value)}
                     >
                       <SelectTrigger>
@@ -104,7 +225,11 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
                     </Select>
                   </TableCell>
                   <TableCell>
-                    <Select value={task.status} onValueChange={(value) => handleTaskChange(task.id, "status", value)}>
+                    <Select
+                      value={task.status}
+                      // disabled={!canModifyTask}
+                      onValueChange={(value) => handleTaskChange(task.id, "status", value)}
+                    >
                       <SelectTrigger>
                         <SelectValue>
                           <Badge
@@ -127,6 +252,35 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
                       </SelectContent>
                     </Select>
                   </TableCell>
+                  <TableCell>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          disabled={!canModifyTask}
+                          className={cn(
+                            "w-[150px] justify-start text-left font-normal",
+                            !task.deadline && "text-muted-foreground"
+                          )}
+                        >
+                          {task.deadline ? format(new Date(task.deadline), "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          disabled={!canModifyTask}
+                          selected={task.deadline ? new Date(task.deadline) : undefined}
+                          onSelect={(date) => handleTaskChange(task.id, "deadline", date)}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </TableCell>
+                  {canModifyTask && <TableCell>
+                    <Button variant="destructive" size="sm" onClick={() => handleDeleteTask(task.id)}>
+                      Delete
+                    </Button>
+                  </TableCell>}
                 </TableRow>
               ))}
             </TableBody>
@@ -136,4 +290,3 @@ export default function TaskManagement({ projectId, initialTasks, teamMembers })
     </Card>
   )
 }
-

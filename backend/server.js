@@ -1,5 +1,7 @@
 const express = require('express');
 const projectRoutes = require('./src/routes/project.routes');
+const userRoutes = require('./src/routes/user.routes');
+const authRoutes  = require('./src/routes/auth.routes');
 const sequelize = require('./config/database');
 const path = require('path');
 const cors = require('cors');
@@ -18,6 +20,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/projects', projectRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 // Test DB connection
 sequelize.authenticate()

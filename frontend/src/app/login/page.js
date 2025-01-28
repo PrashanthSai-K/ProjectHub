@@ -1,26 +1,61 @@
+// app/login/page.tsx
 "use client";
-
 import { useState } from "react";
+import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Building2, Lock, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { api } from "@/services/auth-service";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt with:", { email, password });
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      // Save the token in cookies
+      Cookies.set('token', response.token, {
+        expires: 7, 
+        secure: true, 
+        sameSite: 'strict',
+      });
+      const user = await api.get("/auth/me", response.token);      
+      Cookies.set('user', JSON.stringify(user.user), {
+        expires: 7, 
+        secure: true,
+        sameSite: 'strict', 
+      });
+      // Redirect to the dashboard
+      if(user?.user.role === "Admin"){
+        router.push('/admin/dashboard');
+      }
+      if(user?.user.role === "User"){
+        router.push('/user/dashboard');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `${error.message}`,
+        variant: "destructive",
+      });
+      console.error("Login failed", error);
+    }
   };
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
+        <Toaster />
         <div className="text-center">
           <div className="flex justify-center mb-4">
             <Building2 className="h-12 w-12 text-primary" />

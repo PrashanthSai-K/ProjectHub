@@ -1,18 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { toast } from "sonner"
-import projectService from "@/services/project-service"; 
+import { useState, useEffect, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import projectService from "@/services/project-service";
+import { UserService } from "@/services/user-service"; // Import UserService
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { parseCookies } from "nookies";
+import { useToast } from "@/hooks/use-toast";
 
-
-export default function ProjectCreateForm() {
-
+export default function ProjectCreateForm({ onProjectCreated }) {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -20,31 +28,78 @@ export default function ProjectCreateForm() {
     startDate: "",
     endDate: "",
     priority: "",
-    teamMembers: [],
+    teamMembers: [], // Store user IDs here
     budget: "",
     start_date: "",
     end_date: "",
     status: "Not Started",
     milestones: "",
   });
+  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const searchInputRef = useRef(null);
+  const cookies = parseCookies();
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userData = await UserService.getAllUsers();
+        setUsers(userData);
+        setFilteredUsers(userData);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        toast.error("Failed to load users.");
+      }
+    };
+    fetchUsers();
+  }, []);
+  useEffect(() => {
+    const filtered = users
+      .filter((user) =>
+        user.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+      .slice(0, 5);
+    setFilteredUsers(filtered);
+  }, [searchQuery, users]);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSearchFocus = () => {
+    setIsSearchVisible(!isSearchVisible);
+  };
+  const handleSearchBlur = () => {
+    // Use a small delay to allow for checkbox clicks
+    setTimeout(() => {
+      setIsSearchVisible(false);
+    }, 200);
+  };
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setIsSearchVisible(true);
+  };
   const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleTeamMemberChange = (member) => {
-    setFormData((prev) => ({
-      ...prev,
-      teamMembers: prev.teamMembers.includes(member)
-        ? prev.teamMembers.filter((m) => m !== member)
-        : [...prev.teamMembers, member],
-    }))
-  }
+  const handleTeamMemberChange = (userId) => {
+    setFormData((prev) => {
+      const isAlreadyMember = prev.teamMembers.includes(userId);
+      const updatedTeamMembers = isAlreadyMember
+        ? prev.teamMembers.filter((id) => id !== userId) // Remove if already selected
+        : [...prev.teamMembers, userId]; // Add if not selected
+
+      return {
+        ...prev,
+        teamMembers: updatedTeamMembers,
+      };
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,12 +112,18 @@ export default function ProjectCreateForm() {
         end_date: formData.endDate,
       };
 
-      const response = await projectService.createProject(projectData);
+      const response = await projectService.createProject(projectData, cookies?.token);
       if (response) {
-        toast.success('Project created successfully!');
-        onProjectCreated(response);
+        toast({
+          title: "Project Created",
+          description: "Project Created Successfully"
+        })
       } else {
-        toast.error('Failed to create project. Please try again.');
+        toast({
+          variant: "destructive",
+          title: "Failed to create project",
+          description: "error"
+        })
       }
 
       setFormData({
@@ -77,9 +138,8 @@ export default function ProjectCreateForm() {
         status: "Not Started",
         milestones: "",
       });
-
     } catch (error) {
-      toast.error('Failed to create project. Please try again.');
+      toast.error("Failed to create project. Please try again.");
       console.error("Error creating project:", error);
     }
   };
@@ -88,15 +148,33 @@ export default function ProjectCreateForm() {
     <form onSubmit={handleSubmit} className="space-y-4 w-full">
       <div>
         <Label htmlFor="title">Project Title</Label>
-        <Input id="title" name="title" value={formData.title} onChange={handleChange} required />
+        <Input
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="description">Description</Label>
-        <Textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+        <Textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="department">Department</Label>
-        <Input id="department" name="department" value={formData.department} onChange={handleChange} required />
+        <Input
+          id="department"
+          name="department"
+          value={formData.department}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="startDate">Start Date</Label>
@@ -111,7 +189,14 @@ export default function ProjectCreateForm() {
       </div>
       <div>
         <Label htmlFor="endDate">End Date</Label>
-        <Input id="endDate" name="endDate" type="date" value={formData.endDate} onChange={handleChange} required />
+        <Input
+          id="endDate"
+          name="endDate"
+          type="date"
+          value={formData.endDate}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="priority">Priority</Label>
@@ -130,22 +215,52 @@ export default function ProjectCreateForm() {
           </SelectContent>
         </Select>
       </div>
-      <div>
+      <div className="space-y-2">
         <Label>Team Members</Label>
-        <div className="flex flex-wrap gap-2">
-          {["Alice", "Bob", "Charlie", "David", "Eve"].map((member) => (
-            <div key={member} className="flex items-center space-x-2">
-              <Checkbox
-                id={`member-${member}`}
-                checked={formData.teamMembers.includes(member)}
-                onCheckedChange={() => handleTeamMemberChange(member)}
-              />
-              <label htmlFor={`member-${member}`}>{member}</label>
+        <div className="relative">
+          <Input
+            type="text"
+            placeholder="Search team members..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+            onFocus={handleSearchFocus}
+            onBlur={handleSearchBlur}
+            ref={searchInputRef}
+            className="w-full"
+          />
+          {isSearchVisible && filteredUsers.length > 0 && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+              {filteredUsers.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={() => handleTeamMemberChange(user.id)} // Ensure this does not trigger unnecessary updates
+                >
+                  <label htmlFor={`member-${user.id}`} className="flex-grow">
+                    {user.name}
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+        </div>
+        <div className="flex flex-wrap gap-2 mt-2">
+          {formData.teamMembers.map((userId) => {
+            const user = users.find((u) => u.id === userId);
+            return user ? (
+              <Badge key={userId} variant="secondary" className="text-sm">
+                {user.name}
+                <button
+                  onClick={() => handleTeamMemberChange(userId)}
+                  className="ml-1 text-xs font-semibold"
+                >
+                  ×
+                </button>
+              </Badge>
+            ) : null;
+          })}
         </div>
       </div>
-
       <div>
         <Label htmlFor="budget">Budget</Label>
         <Input
@@ -159,7 +274,11 @@ export default function ProjectCreateForm() {
       </div>
       <div>
         <Label htmlFor="status">Status</Label>
-        <Select name="status" value={formData.status} onValueChange={(value) => handleSelectChange("status", value)}>
+        <Select
+          name="status"
+          value={formData.status}
+          onValueChange={(value) => handleSelectChange("status", value)}
+        >
           <SelectTrigger>
             <SelectValue placeholder="Select status" />
           </SelectTrigger>

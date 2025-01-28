@@ -1,7 +1,10 @@
-
-export default function Home() {
-    
+// app/user/dashboard/page.tsx
+const UserDashboard = () => {
   return (
-    <div>Dashboard h</div>
-  )
-}
+    <div>
+      <h1>User Dashboard</h1>
+    </div>
+  );
+};
+
+export default UserDashboard;

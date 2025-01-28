@@ -3,19 +3,29 @@ import Layout from "@/components/project/layout";
 import ProjectList from "@/components/project/project-list";
 import { useState, useEffect } from 'react';
 import projectService from "@/services/project-service";
-
+import { parseCookies } from 'nookies';
 
 export default function Home() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const cookies = parseCookies()
+    const userData = cookies?.user ? JSON.parse(cookies.user) : null;
+    setUserId(userData?.id);
+  }, []);
 
   useEffect(() => {
     const fetchProjects = async () => {
+      if (!userId) {
+        return;
+      }
       setLoading(true);
       setError(null);
       try {
-        const data = await projectService.getAllProjects();
+        const data = await projectService.getAllProjects(userId);
         setProjects(data);
       } catch (err) {
         console.log(err)
@@ -26,7 +36,7 @@ export default function Home() {
     };
 
     fetchProjects();
-  }, []);
+  }, [userId]);
 
 
   if (loading) {

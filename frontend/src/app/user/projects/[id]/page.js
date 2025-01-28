@@ -4,19 +4,33 @@ import ProjectDetails from "@/components/project/project-details";
 import projectService from "@/services/project-service";
 import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import { parseCookies } from 'nookies';
 
 
 export default function Project() {
-
+    
     const [project, setProject] = useState(null);
     const [tasks, setTasks] = useState([]);
     const params = useParams();
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [userRole, setUserRole] = useState(null)
+
+    const cookies = parseCookies()
+
+
+    useEffect(() => {
+        const userData = cookies?.user ? JSON.parse(cookies.user) : null;
+        setUserId(userData?.id);
+    }, []);
 
     const fetchProjectData = async () => {
         try {
+            if (!userId) {
+                return;
+            }
             if (!params || !params.id) {
                 throw new Error('Invalid route parameters');
             }
@@ -26,10 +40,11 @@ export default function Project() {
             if (isNaN(projectId)) {
                 throw new Error('Invalid project ID');
             }
-            const projectData = await projectService.getProjectById(projectId);
+            const projectData = await projectService.getProjectById(projectId, cookies?.token);
             setProject(projectData);
-            // Assuming your backend returns tasks and messages as part of the project response
-            setTasks(projectData.tasks || []);
+             // Set user role after fetching project data
+            determineUserRole(projectData, userId);
+             // Assuming your backend returns tasks and messages as part of the project response
             setMessages(projectData.chats || []);
         }
         catch (error) {
@@ -39,11 +54,21 @@ export default function Project() {
             setLoading(false)
         }
     };
-
-
+    // Function to determine user role
+    const determineUserRole = (projectData, userId) => {
+        if (projectData && userId) {
+          if (projectData.owner_id === userId) {
+            setUserRole('owner');
+          } else if (projectData.team_members && JSON.parse(projectData.team_members).includes(userId)) {
+            setUserRole('team_member');
+          } else {
+              setUserRole('viewer')
+          }
+        }
+      };
     useEffect(() => {
         fetchProjectData();
-    }, [params]);
+    }, [params, userId]);
 
     if (loading) {
         return (
@@ -72,7 +97,12 @@ export default function Project() {
         <Layout>
             <div className="space-y-6">
                 <h2 className="text-3xl font-bold">Project Details</h2>
-                <ProjectDetails project={project} fetchProjectData={fetchProjectData} tasks={tasks} messages={messages} />
+                <ProjectDetails 
+                project={project} 
+                fetchProjectData={fetchProjectData} 
+                messages={messages} 
+                userId={userId}
+                />
             </div>
         </Layout>
     );

@@ -19,7 +19,10 @@ import {
 } from "@/components/ui/drawer"
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-// import { useToast } from "@/components/ui/use-toast";
+import { parseCookies } from 'nookies';
+import { useToast } from "@/hooks/use-toast";
+// import { useSession } from 'next-auth/react'; // Removed this import
+
 
 export default function ProjectFiles() {
 
@@ -32,14 +35,23 @@ export default function ProjectFiles() {
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState(null);
-  // const { toast } = useToast();
+const {toast} = useToast();
+  
+  const [userId, setUserId] = useState(null);
+  const cookies = parseCookies()
+// console.log("cooke", );
+
+  useEffect(() => {
+    const userData = cookies?.user ? JSON.parse(cookies.user) : null;
+    setUserId(userData?.id);
+  }, []);
 
   useEffect(() => {
     if (params?.id) {
       setProjectId(Number.parseInt(params.id));
     }
-
   }, [params]);
+
 
   const fetchProjectAndFiles = async () => {
     try {
@@ -47,9 +59,9 @@ export default function ProjectFiles() {
       if (isNaN(projectId)) {
         throw new Error('Invalid project ID');
       }
-      const projectData = await projectService.getProjectById(projectId);
+      const projectData = await projectService.getProjectById(projectId, cookies?.token);
       setProject(projectData);
-      const filesData = await projectService.getAllProjectFiles(projectId)
+      const filesData = await projectService.getAllProjectFiles(projectId, cookies?.token)
       setFiles(filesData)
     }
     catch (error) {
@@ -62,11 +74,11 @@ export default function ProjectFiles() {
   }
 
   useEffect(() => {
-    if (projectId) {
+    if (projectId && userId) {
       fetchProjectAndFiles()
     }
 
-  }, [projectId])
+  }, [projectId, userId])
 
   const handleFileUpload = async () => {
     if (!selectedFiles) {
@@ -77,8 +89,8 @@ export default function ProjectFiles() {
     }
     try {
       setUploading(true)
-      await projectService.uploadProjectFiles(projectId, selectedFiles)
-      const filesData = await projectService.getAllProjectFiles(projectId)
+      await projectService.uploadProjectFiles(projectId, selectedFiles, cookies?.token)
+      const filesData = await projectService.getAllProjectFiles(projectId, cookies?.token)
       setFiles(filesData);
       setOpen(false);
     }

@@ -11,7 +11,6 @@ import { NeedMembersToggle } from "@/components/project/need-members-toggle"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 
-// Expanded dummy data for projects
 const dummyProjects = [
   {
     id: 1,

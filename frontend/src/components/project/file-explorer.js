@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { getFileIcon } from "@/components/project/get-fileicon";
+import { parseCookies } from "nookies";
 
 const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles }) => {
     const [files, setLocalFiles] = useState([]);
@@ -29,6 +30,7 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
     const router = useRouter();
+    const cookies = parseCookies();
 
     useEffect(() => {
         setLocalFiles(initialFiles?.files || []);
@@ -37,7 +39,7 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
     const handleDownload = async (filename) => {
         try {
              setLoading(true);
-           await projectService.downloadProjectFile(projectId, filename);
+           await projectService.downloadProjectFile(projectId, filename, cookies?.token);
          } catch (error) {
             console.log(error);
         } finally {
@@ -48,15 +50,15 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
     const handleDelete = async () => {
         try {
             setDeleteLoading(true);
-            await projectService.deleteProjectFiles(projectId, filesToDelete);
+            await projectService.deleteProjectFiles(projectId, filesToDelete, cookies?.token);
             fetchProjectAndFiles();
-            setSelectedFiles([]); // clear selected files after delete
+            setSelectedFiles([]);
             setOpenDeleteModal(false);
         } catch (error) {
             console.error("Error deleting file:", error);
         } finally {
             setDeleteLoading(false);
-            setFilesToDelete([]); // clear files to delete
+            setFilesToDelete([]); 
         }
     };
 
