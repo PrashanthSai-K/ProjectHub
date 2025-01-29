@@ -68,6 +68,30 @@ const createProject = async (req, res) => {
     }
 };
 
+const updatePost = async (req, res) => {
+    const { id , data } = req.body;
+    console.log(id , data);
+    
+    if (!id) {
+        return res.status(400).json({ message: 'Project ID is required' });
+    }
+    try {
+        const [results, metadata] = await sequelize.query(
+            `UPDATE projects SET posted = ? WHERE id = ?`,
+            {
+                replacements: [data , id]
+            }
+        );
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Failed to update Post' });
+        }
+        res.status(200).json({ message: 'Post updated successfully' });
+    } catch (error) {
+        console.error("Error updating Post:", error);
+        res.status(500).json({ message: "Failed to update Post" });
+    }
+};
+
 const updateProject = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -450,5 +474,6 @@ module.exports = {
     deleteProjectFiles,
     downloadProjectFile,
     uploadProjectFiles,
-    getProjectByUserId
+    getProjectByUserId,
+    updatePost
 };
