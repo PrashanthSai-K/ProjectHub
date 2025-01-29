@@ -13,10 +13,13 @@ export async function middleware(request) {
         return NextResponse.next();
     }
 
-    // Handling the login page
     if (isLoginPath) {
-        const token = request.cookies.get('token')?.value;
-        if (token) {
+        const user = request.cookies.get('user')?.value;
+        
+        if (JSON.parse(user).role == "Admin") {
+            return NextResponse.redirect(new URL('/admin/dashboard', request.url));
+        }
+        if (JSON.parse(user).role == "User") {
             return NextResponse.redirect(new URL('/user/dashboard', request.url));
         }
         return NextResponse.next();
@@ -52,7 +55,7 @@ export async function middleware(request) {
     }
 
     const userCookie = request.cookies.get('user')?.value;
-    
+
     if (!userCookie) {
         const userData = await UserService.getUserData(token);
         const userJSON = JSON.stringify(userData);

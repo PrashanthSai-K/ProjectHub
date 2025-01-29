@@ -58,7 +58,7 @@ export default function ProjectList({ projects , fetchProjects }) {
           className="h-full flex flex-col transform transition duration-300 hover:scale-105"
         >
           <Link
-            href={`/user/projects/${project.id}`}
+            href={`/admin/projects/${project.id}`}
             className="block w-full h-full"
           >
             <CardHeader>
@@ -82,7 +82,7 @@ export default function ProjectList({ projects , fetchProjects }) {
             </CardHeader>
             <CardContent className="flex-grow flex flex-col justify-between">
               <div className="space-y-2">
-                <div className="flex items-center text-sm text-gray-500">
+                <div className="flex  items-center text-sm text-gray-500">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {project.start_date} - {project.end_date}
                 </div>

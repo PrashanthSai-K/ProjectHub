@@ -1,30 +1,21 @@
 "use client";
-import Layout from "@/components/project/layout";
-import ProjectList from "@/components/project/project-list";
+import Layout from "@/app/admin/components/layout";
+import ProjectList from "@/app/admin/components/project-list";
 import { useState, useEffect } from "react";
 import projectService from "@/services/project-service";
 import { parseCookies } from "nookies";
 
-export default function Home() {
+export default function AdminProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const cookies = parseCookies();
-    const userData = cookies?.user ? JSON.parse(cookies.user) : null;
-    setUserId(userData?.id);
-  }, []);
+  const cookies = parseCookies();
 
   const fetchProjects = async () => {
-    if (!userId) {
-      return;
-    }
     setLoading(true);
     setError(null);
     try {
-      const data = await projectService.getAllProjects(userId);
+      const data = await projectService.getAllProjectsAdmin(cookies?.token);
       setProjects(data);
     } catch (err) {
       console.log(err);
@@ -36,7 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchProjects();
-  }, [userId]);
+  }, []);
 
   if (loading) {
     return (
@@ -56,7 +47,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <h1 className="text-3xl font-bold mb-6">Projects</h1>
+      <h1 className="text-3xl font-bold mb-6">All Projects</h1>
       {projects.length === 0
         ?
         <span className="text-gray-400 text-sm">

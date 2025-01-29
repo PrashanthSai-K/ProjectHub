@@ -1,3 +1,4 @@
+
 import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 import { toast } from 'sonner'; // Or however you import toast
@@ -29,9 +30,27 @@ const projectService = {
             throw error;
         }
     },
+    getAllProjectsAdmin: async (token) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/admin`, {headers: {Authorization : `Bearer ${token}`}} );
+            return response.data;
+        } catch (error) {
+            toast.error('Failed to fetch projects. Please try again.');
+            throw error;
+        }
+    },
     getProjectById: async (id, token) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+            return response.data;
+        } catch (error) {
+            toast.error('Failed to fetch project. Please try again.');
+            throw error;
+        }
+    },
+    getProjectByIdAdmin: async (id, token) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/${id}/admin`, { headers: { Authorization: `Bearer ${token}` } });
             return response.data;
         } catch (error) {
             toast.error('Failed to fetch project. Please try again.');
@@ -49,6 +68,16 @@ const projectService = {
             };
         } catch (error) {
             toast.error('Failed to update project. Please try again.');
+            throw error;
+        }
+    },
+    updatePost: async (id, data) => {
+        try {
+            const response = await axios.put(`${API_BASE_URL}`, { id, data });
+            toast.success("Posted successfully!");
+            return response.data;
+        } catch (error) {
+            toast.error("Failed to Post project. Please try again.");
             throw error;
         }
     },
@@ -158,8 +187,6 @@ const projectService = {
             throw error;
         }
     }
-
-};
+}
 
 export default projectService;
-

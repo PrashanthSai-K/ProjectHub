@@ -1,6 +1,6 @@
 // app/login/page.tsx
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,12 +12,15 @@ import { useRouter } from "next/navigation";
 import { api } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { parseCookies } from "nookies";
 
 export default function Home() {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { toast } = useToast();
+  const cookies = parseCookies();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +55,10 @@ export default function Home() {
       console.error("Login failed", error);
     }
   };
+
+  // useEffect(()=>{
+  //   cookies?.user
+  // },[])
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">

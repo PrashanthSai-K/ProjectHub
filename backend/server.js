@@ -4,6 +4,8 @@ const userRoutes = require('./src/routes/user.routes');
 const authRoutes = require('./src/routes/auth.routes');
 const chatRoutes = require('./src/routes/chat.routes');
 const calendarRoutes = require('./src/routes/calendar.routes')
+// const authRoutes  = require('./src/routes/auth.routes');
+const exploreRoutes = require('./src/routes/explore.routes')
 const sequelize = require('./config/database');
 const path = require('path');
 const cors = require('cors');
@@ -33,6 +35,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/chats', chatRoutes);
 app.use('/api/calendar', calendarRoutes)
+app.use('/api/explore', exploreRoutes);
+
 // Create HTTP server
 const server = http.createServer(app);
 

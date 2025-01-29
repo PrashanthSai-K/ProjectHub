@@ -71,6 +71,30 @@ console.log(milestones);
     }
 };
 
+const updatePost = async (req, res) => {
+    const { id , data } = req.body;
+    console.log(id , data);
+    
+    if (!id) {
+        return res.status(400).json({ message: 'Project ID is required' });
+    }
+    try {
+        const [results, metadata] = await sequelize.query(
+            `UPDATE projects SET posted = ? WHERE id = ?`,
+            {
+                replacements: [data , id]
+            }
+        );
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: 'Failed to update Post' });
+        }
+        res.status(200).json({ message: 'Post updated successfully' });
+    } catch (error) {
+        console.error("Error updating Post:", error);
+        res.status(500).json({ message: "Failed to update Post" });
+    }
+};
+
 const updateProject = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -204,7 +228,24 @@ const getAllProjects = async (req, res) => {
     }
 };
 
+const getAllProjectsAdmin = async (req, res) => {
 
+    try {
+        let query = 'SELECT * FROM projects';
+        let replacements = {};
+
+            query = `SELECT * FROM projects`;
+
+        const [results, metadata] = await sequelize.query(query, {
+            replacements: replacements,
+        });
+
+        res.status(200).json(results);
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        res.status(500).json({ message: 'Failed to fetch projects' });
+    }
+};
 const getProjectById = async (req, res) => {
     const { id } = req.params;
     const userId = req.user.id;
@@ -228,6 +269,35 @@ const getProjectById = async (req, res) => {
                 return res.status(403).json({ message: "Access Denied: User is not authorized to view this project" });
             }
         }
+        res.status(200).json(project);
+    } catch (error) {
+        console.error("Error fetching project:", error);
+        res.status(500).json({ message: "Failed to fetch project" });
+    }
+};
+
+const getProjectByIdAdmin = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [results, metadata] = await sequelize.query(
+            `SELECT * FROM projects WHERE id = ?`,
+            {
+                replacements: [id]
+            }
+        );
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+
+        const project = results[0];
+        // if (userId) {
+
+        //     const isUserInProject = project.user_id === userId || JSON.parse(project.team_members).includes(`${userId}`)
+        //     if (!isUserInProject) {
+        //         return res.status(403).json({ message: "Access Denied: User is not authorized to view this project" });
+        //     }
+        // }
         res.status(200).json(project);
     } catch (error) {
         console.error("Error fetching project:", error);
@@ -451,12 +521,15 @@ const downloadProjectFile = async (req, res) => {
 module.exports = {
     createProject,
     getAllProjects,
+    getAllProjectsAdmin,
     getProjectById,
+    getProjectByIdAdmin,
     updateProject,
     deleteProject,
     getAllProjectFiles,
     deleteProjectFiles,
     downloadProjectFile,
     uploadProjectFiles,
-    getProjectByUserId
+    getProjectByUserId,
+    updatePost
 };
