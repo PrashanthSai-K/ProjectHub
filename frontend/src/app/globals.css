@@ -70,3 +70,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.scroll-bar-none {
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer */
+}
+
+.scroll-bar-none::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}

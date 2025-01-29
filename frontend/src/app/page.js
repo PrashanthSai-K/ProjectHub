@@ -10,18 +10,7 @@ const Dashboard = () => {
   const router = useRouter();
   
   useEffect(() => {
-    const token = getToken()
-    const fetchUserData = async () => {
-      try {
-        const data = await api.get('/auth/me', token)
-        setUser(data.user)
-      } catch (error) {
-        console.log("Unauthorized: ", error)
-        router.push('/'); // Redirect to login if unauthorized
-      }
-    };
-    if (!token) router.push('/')
-    else fetchUserData();
+    router.push('/login')
   }, []);
 
   if (!user) {

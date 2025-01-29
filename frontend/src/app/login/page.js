@@ -23,23 +23,24 @@ export default function Home() {
     e.preventDefault();
     try {
       const response = await api.post('/auth/login', { email, password });
-      // Save the token in cookies
+
       Cookies.set('token', response.token, {
-        expires: 7, 
-        secure: true, 
+        expires: 7,
+        secure: true,
         sameSite: 'strict',
       });
-      const user = await api.get("/auth/me", response.token);      
+      const user = await api.get("/auth/me", response.token);
+
       Cookies.set('user', JSON.stringify(user.user), {
-        expires: 7, 
+        expires: 7,
         secure: true,
-        sameSite: 'strict', 
+        sameSite: 'strict',
       });
       // Redirect to the dashboard
-      if(user?.user.role === "Admin"){
+      if (user?.user.role === "Admin") {
         router.push('/admin/dashboard');
       }
-      if(user?.user.role === "User"){
+      if (user?.user.role === "User") {
         router.push('/user/dashboard');
       }
     } catch (error) {

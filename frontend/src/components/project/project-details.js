@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { CalendarIcon, Users, FileText } from "lucide-react"
@@ -10,14 +10,35 @@ import { ChatButton } from "@/components/chat/chat-button"
 import { EditProjectSidebar } from "@/components/project/edit-project-sidebar"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useToast } from "@/hooks/use-toast"
+import { UserService } from "@/services/user-service"
 
 export default function ProjectDetails({ project: initialProject, messages, fetchProjectData, userRole, userId }) {
   const [project, setProject] = useState(initialProject)
   const [isChatOpen, setIsChatOpen] = useState(false)
 
-  const canEdit = userRole === 'owner';
+  const canEdit = project.user_id === parseInt(userId);
   const canManageTasks = project.user_id === parseInt(userId);
-  
+  const [users, setUsers] = useState([]);
+
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const userData = await UserService.getAllUsers();
+        setUsers(userData);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+        toast({
+          variant: "destructive",
+          title: "Failed to fetch users",
+          description: error
+        })
+      }
+    };
+    fetchUsers();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -45,7 +66,21 @@ export default function ProjectDetails({ project: initialProject, messages, fetc
             </div>
             <div className="flex items-center">
               <Users className="mr-2 h-4 w-4" />
-              <span>{JSON.parse(project.team_members)?.join(", ")}</span>
+              <div className="text-xs">
+                {
+                  JSON.parse(project.team_members)?.map((m) => {
+                    const user = users.find((u) => u.id == parseInt(m));
+                    return user ? (
+                      <span key={user.id}>
+                        {user.name},
+                      </span>
+                    ) : (
+                      null
+                    )
+                  })
+                }
+              </div>
+              {/* <span>{JSON.parse(project.team_members)?.join(", ")}</span> */}
             </div>
             <div>
               <strong>Department:</strong> {project.department}

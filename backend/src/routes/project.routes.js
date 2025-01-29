@@ -9,7 +9,7 @@ const { userAuthorize } = require('../middleware/auth.middleware');
 router.post('/', userAuthorize, projectValidator, createProject);
 router.get('/', getAllProjects);
 router.get('/:id', userAuthorize, getProjectById);
-router.put('/:id', projectValidator, updateProject);
+router.put('/:id', userAuthorize, projectValidator, updateProject);
 router.delete('/:id', deleteProject);
 
 router.post('/:id/files', userAuthorize,upload.array('files', 10), uploadProjectFiles)

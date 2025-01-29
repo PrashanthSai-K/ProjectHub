@@ -19,6 +19,7 @@ const createProject = async (req, res) => {
     }
     const { title, description, department, startDate, endDate, priority, teamMembers, budget, status, milestones } = req.body;
     const user_id = req.user.id;
+console.log(milestones);
 
     if (!user_id) {
         return res.status(400).json({ message: 'User ID is required' });
@@ -34,10 +35,12 @@ const createProject = async (req, res) => {
 
         const teamMembersWithUserId = Array.from(new Set([...teamMembers, user_id].map(String)));
 
+        const milestonesTags = Array.from(new Set(milestones.split(",").map(String)));
+
         const [results, metadata] = await sequelize.query(
-            `INSERT INTO projects (title, description, department, start_date, end_date, priority, team_members, budget, status, milestones, upload_path, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO projects (title, description, department, start_date, end_date, priority, team_members, budget, status, tags, upload_path, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             {
-                replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, milestones, "", user_id], // initially setting upload_path to null
+                replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), "", user_id], // initially setting upload_path to null
                 transaction
             }
         );
@@ -74,7 +77,7 @@ const updateProject = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { id } = req.params;
-    const userId = req.query.userId;
+    const userId = req.user.id;
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required for authorization' });
     }
@@ -98,10 +101,15 @@ const updateProject = async (req, res) => {
         if (!hasProjectAccess(project, userId)) {
             return res.status(403).json({ message: "Access Denied: User is not authorized to update this project" });
         }
+
+        const teamMembersWithUserId = Array.from(new Set([...teamMembers, userId].map(String)));
+
+        const milestonesTags = Array.from(new Set(milestones.split(",").map(String)));
+
         const [results, metadata] = await sequelize.query(
-            `UPDATE projects SET title=?, description=?, department=?, start_date=?, end_date=?, priority=?, team_members=?, budget=?, status=?, milestones=? WHERE id=?`,
+            `UPDATE projects SET title=?, description=?, department=?, start_date=?, end_date=?, priority=?, team_members=?, budget=?, status=?, tags=? WHERE id=?`,
             {
-                replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembers), budget, status, milestones, id]
+                replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), id]
             }
         );
         if (results.affectedRows === 0) {

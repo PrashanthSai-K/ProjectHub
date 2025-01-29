@@ -7,10 +7,8 @@ import ProjectCreateForm from '@/components/project/project-create-form';
 export default function page() {
     return (
         <Layout>
-            <div className="space-y-6">
-                <h2 className="text-3xl font-bold">Create New Project</h2>
+                {/* <h2 className="text-3xl font-bold">Create New Project</h2> */}
                 <ProjectCreateForm  />
-            </div>
         </Layout>
     )
 }

@@ -13,15 +13,15 @@ export async function getUserRole(token) {
     }
 
     try {
-        const { data } = await axios.get('http://localhost:4500/api/auth/me',{
-            headers : {
-                Authorization : `Bearer ${token}`
+        const { data } = await axios.get('http://localhost:4500/api/auth/me', {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
         });
-    
-    return data?.user;
-} catch (error) {
-    console.error('Error fetching user role:', error);
-    return null;
-}
+
+        return data?.user;
+    } catch (error) {
+        console.error('Error fetching user role:', "so sadd raah");
+        return null;
+    }
 }

@@ -1,21 +1,32 @@
 "use client"
-
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { LayoutDashboard, ListTodo, Calendar, Settings, PlusCircle, Compass } from "lucide-react"
+import { LayoutDashboard, ListTodo, Calendar, LogOut, PlusCircle, Compass } from "lucide-react"
+import Cookies from "js-cookie"
+import { useToast } from "@/hooks/use-toast"
 
 const sidebarItems = [
-  { name: "Dashboard", href: "/", icon: LayoutDashboard },
+  { name: "Dashboard", href: "/user/dashboard", icon: LayoutDashboard },
   { name: "Projects", href: "/user/projects", icon: ListTodo },
   { name: "Explore", href: "/user/explore", icon: Compass },
   { name: "Calendar", href: "/user/calendar", icon: Calendar },
-  { name: "Settings", href: "/user/settings", icon: Settings },
 ]
 
 export function Sidebar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
+  const router = useRouter();
+  const { toast } = useToast()
+  const handleLogout = () => {
+    Cookies.remove('token');
+    Cookies.remove('user')
+    toast({
+      title: "Logout",
+      description: "Logged out successfully",
+    })
+    router.push('/login')
+  }
 
   return (
     <div className="flex h-full flex-col justify-between border-r bg-gray-100/40 p-4 w-64">
@@ -39,6 +50,10 @@ export function Sidebar() {
             </Button>
           ))}
         </div>
+        <Button className="w-full justify-start pt-0" variant="ghost" onClick={handleLogout} >
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </Button>
       </div>
       <Button className="w-full justify-start" asChild>
         <Link href="/user/projects/new">
@@ -49,4 +64,3 @@ export function Sidebar() {
     </div>
   )
 }
-

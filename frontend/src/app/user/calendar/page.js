@@ -8,6 +8,8 @@ import interactionPlugin from "@fullcalendar/interaction"
 // import { useToast } from "@/components/ui/use-toast"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import Layout from "@/components/project/layout"
+import { getCalendarEvents } from "@/services/calendar-service"
+import { parseCookies } from "nookies"
 
 // Dummy data for preview
 const dummyProjects = [
@@ -47,88 +49,87 @@ const dummyProjects = [
   },
 ]
 
+
+
 export default function CalendarPage() {
-  const [events, setEvents] = useState([])
-  const [selectedEvent, setSelectedEvent] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-//   const { toast } = useToast()
+    const [events, setEvents] = useState([])
+    const [selectedEvent, setSelectedEvent] = useState(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
+    const cookies = parseCookies();
 
-  useEffect(() => {
-    setDummyProjects()
-  }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getCalendarEvents(cookies?.token)
+                const formattedEvents = formatProjectsForCalendar(data)
+                setEvents(formattedEvents)
+            } catch (err) {
+                setError(err.message)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchData()
+    }, [])
 
-  const setDummyProjects = () => {
-    try {
-      const formattedEvents = formatProjectsForCalendar(dummyProjects)
-      setEvents(formattedEvents)
-    } catch (error) {
-      console.error("Error setting dummy projects:", error)
-      toast({
-        title: "Error",
-        description: "Failed to load projects. Please try again.",
-        variant: "destructive",
-      })
-    }
-  }
+    const formatProjectsForCalendar = (projects) => {
+        return projects.flatMap(project => {
+            const events = [{
+                title: `${project.title} (Start)`,
+                start: project.startDate,
+                color: "#4CAF50",
+                extendedProps: { type: "project", project }
+            }, {
+                title: `${project.title} (End)`,
+                start: project.endDate,
+                color: "#F44336",
+                extendedProps: { type: "project", project }
+            }]
 
-  const formatProjectsForCalendar = (projects) => {
-    const formattedEvents = []
+            if (project.tasks) {
+                events.push(...project.tasks.map(task => ({
+                    title: task.title,
+                    start: task.dueDate,
+                    color: "#2196F3",
+                    extendedProps: { type: "task", task, project }
+                })))
+            }
 
-    projects.forEach((project) => {
-      // Add project start date
-      formattedEvents.push({
-        title: `${project.title} (Start)`,
-        start: project.startDate,
-        color: "#4CAF50",
-        extendedProps: { type: "project", project },
-      })
-
-      // Add project end date
-      formattedEvents.push({
-        title: `${project.title} (End)`,
-        start: project.endDate,
-        color: "#F44336",
-        extendedProps: { type: "project", project },
-      })
-
-      // Add tasks
-      if (project.tasks) {
-        project.tasks.forEach((task) => {
-          formattedEvents.push({
-            title: task.title,
-            start: task.dueDate,
-            color: "#2196F3",
-            extendedProps: { type: "task", task, project },
-          })
+            return events
         })
-      }
-    })
+    }
 
-    return formattedEvents
-  }
+    const handleEventClick = (clickInfo) => {
+        setSelectedEvent(clickInfo.event)
+        setIsModalOpen(true)
+    }
 
-  const handleEventClick = (clickInfo) => {
-    setSelectedEvent(clickInfo.event)
-    setIsModalOpen(true)
-  }
+    if (loading) return <div>Loading calendar...</div>
+    if (error) return <div>Error loading calendar: {error}</div>
 
-  return (
-    <Layout>
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Project Calendar</h1>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <FullCalendar
-            plugins={[dayGridPlugin, interactionPlugin]}
-            initialView="dayGridMonth"
-            events={events}
-            eventClick={handleEventClick}
-            height="auto"
-          />
-        </div>
-        <EventDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} event={selectedEvent} />
-      </div>
-    </Layout>
-  )
+    return (
+        <Layout>
+            <div className="container mx-auto p-4">
+                <h1 className="text-2xl font-bold mb-4">Project Calendar</h1>
+                <div className="bg-white p-4 rounded-lg shadow">
+                    <FullCalendar
+                        plugins={[dayGridPlugin, interactionPlugin]}
+                        initialView="dayGridMonth"
+                        events={events}
+                        eventClick={handleEventClick}
+                        height="auto"
+                    />
+                </div>
+                <EventDetailsModal 
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)} 
+                    event={selectedEvent} 
+                />
+            </div>
+        </Layout>
+    )
 }
 
 function EventDetailsModal({ isOpen, onClose, event }) {

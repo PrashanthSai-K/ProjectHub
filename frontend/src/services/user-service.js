@@ -9,7 +9,7 @@ export class UserService {
       throw error;
     }
   }
-   static async getUserById(id) {
+  static async getUserById(id) {
     try {
       const response = await axios.get(`${API_BASE_URL}/${id}`);
       return response.data;
@@ -17,29 +17,40 @@ export class UserService {
       throw error;
     }
   }
-    static async createUser(userData) {
-        try {
-            const response = await axios.post(API_BASE_URL, userData);
-            return response.data;
-        } catch (error) {
-           
-              throw error;
-        }
+  static async createUser(userData) {
+    try {
+      const response = await axios.post(API_BASE_URL, userData);
+      return response.data;
+    } catch (error) {
+
+      throw error;
     }
-    static async updateUser(id, userData) {
-        try {
-          
-            const response = await axios.put(`${API_BASE_URL}/${id}`, userData);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+  }
+  static async updateUser(id, userData) {
+    try {
+
+      const response = await axios.put(`${API_BASE_URL}/${id}`, userData);
+      return response.data;
+    } catch (error) {
+      throw error;
     }
-   static async deleteUser(id) {
+  }
+  static async deleteUser(id) {
     try {
       const response = await axios.delete(`${API_BASE_URL}/${id}`);
-        return response.data;
+      return response.data;
     } catch (error) {
+      throw error;
+    }
+  }
+  static async getUserData(token) {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data;
+    } catch (error) {
+      // .error('Failed to fetch user data, please try again');
       throw error;
     }
   }

@@ -14,13 +14,15 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import projectService from "@/services/project-service";
-import { UserService } from "@/services/user-service"; // Import UserService
+import { UserService } from "@/services/user-service";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { parseCookies } from "nookies";
 import { useToast } from "@/hooks/use-toast";
 
+
 export default function ProjectCreateForm({ onProjectCreated }) {
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -37,6 +39,7 @@ export default function ProjectCreateForm({ onProjectCreated }) {
   });
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [users, setUsers] = useState([]);
+  const [tags, setTags] = useState([])
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const searchInputRef = useRef(null);
@@ -52,11 +55,16 @@ export default function ProjectCreateForm({ onProjectCreated }) {
         setFilteredUsers(userData);
       } catch (error) {
         console.error("Error fetching users:", error);
-        toast.error("Failed to load users.");
+        toast({
+          variant: "destructive",
+          title: "Failed to fetch users",
+          description: error
+        })
       }
     };
     fetchUsers();
   }, []);
+
   useEffect(() => {
     const filtered = users
       .filter((user) =>
@@ -91,8 +99,8 @@ export default function ProjectCreateForm({ onProjectCreated }) {
     setFormData((prev) => {
       const isAlreadyMember = prev.teamMembers.includes(userId);
       const updatedTeamMembers = isAlreadyMember
-        ? prev.teamMembers.filter((id) => id !== userId) // Remove if already selected
-        : [...prev.teamMembers, userId]; // Add if not selected
+        ? prev.teamMembers.filter((id) => id !== userId)
+        : [...prev.teamMembers, userId];
 
       return {
         ...prev,
@@ -110,6 +118,7 @@ export default function ProjectCreateForm({ onProjectCreated }) {
         teamMembers: formData.teamMembers,
         start_date: formData.startDate,
         end_date: formData.endDate,
+        milestones: tags.join(",")
       };
 
       const response = await projectService.createProject(projectData, cookies?.token);
@@ -139,7 +148,11 @@ export default function ProjectCreateForm({ onProjectCreated }) {
         milestones: "",
       });
     } catch (error) {
-      toast.error("Failed to create project. Please try again.");
+      toast({
+        variant: "destructive",
+        title: "Failed to create task",
+        description: error
+      })
       console.error("Error creating project:", error);
     }
   };
@@ -234,7 +247,7 @@ export default function ProjectCreateForm({ onProjectCreated }) {
                 <div
                   key={user.id}
                   className="flex items-center space-x-2 p-2 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => handleTeamMemberChange(user.id)} // Ensure this does not trigger unnecessary updates
+                  onClick={() => handleTeamMemberChange(user.id)}
                 >
                   <label htmlFor={`member-${user.id}`} className="flex-grow">
                     {user.name}
@@ -290,14 +303,43 @@ export default function ProjectCreateForm({ onProjectCreated }) {
         </Select>
       </div>
       <div>
-        <Label htmlFor="milestones">Milestones</Label>
-        <Textarea
+        <Label htmlFor="tags">Tags</Label>
+        <div className="flex flex-wrap gap-2 mb-2">
+          {tags.map((tag, index) => (
+            <Badge key={index} variant="secondary" className="text-sm">
+              {tag}
+              <button
+                type="button"
+                onClick={() => setTags(tags.filter((_, i) => i !== index))}
+                className="ml-1 text-xs font-semibold"
+              >
+                ×
+              </button>
+            </Badge>
+          ))}
+        </div>
+        <Input
           id="milestones"
           name="milestones"
           value={formData.milestones}
-          onChange={handleChange}
-          placeholder="Enter key milestones, separated by commas"
+          onChange={(e) => {
+            const value = e.target.value;
+            // Check if the input ends with a comma or space
+            if (value.endsWith(",") || value.endsWith(" ")) {
+              const newTag = value.slice(0, -1).trim(); // Remove the trailing comma/space and trim the rest
+              if (newTag && !tags.includes(newTag)) {
+                setTags([...tags, newTag]); // Add the new tag if it doesn't already exist
+              }
+              setFormData((prev) => ({ ...prev, milestones: "" })); // Clear the input field
+            } else {
+              // Update the input value normally
+              setFormData((prev) => ({ ...prev, milestones: value }));
+            }
+          }}
+          placeholder="Enter tags, separated by commas or spaces"
         />
+
+
       </div>
       <Button type="submit">Create Project</Button>
     </form>

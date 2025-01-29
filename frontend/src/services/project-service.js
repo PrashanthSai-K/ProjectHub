@@ -1,14 +1,19 @@
+import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 import { toast } from 'sonner'; // Or however you import toast
-
-const API_BASE_URL = 'http://localhost:4500/api/projects'; // Replace with your actual API base URL
+// import { activityHelper } from '@/utils/activity-helper';
+const API_BASE_URL = 'http://localhost:4500/api/projects';
 
 const projectService = {
-    createProject: async (projectData, token) => {
+    createProject: async (projectData, token, user) => {
         try {
-            const response = await axios.post(API_BASE_URL, projectData, {headers: {Authorization: `Bearer ${token}`}});
+            const response = await axios.post(API_BASE_URL, projectData, { headers: { Authorization: `Bearer ${token}` } });
+            const activity = activityHelper.createActivity(user, "created", "project")
             toast.success('Project created successfully!');
-            return response.data;
+            return {
+                project: response.data,
+                activity
+            };
         } catch (error) {
             console.log("error", error)
             toast.error(error?.response?.data?.message || error?.message || 'Failed to create project. Please try again.');
@@ -33,28 +38,33 @@ const projectService = {
             throw error;
         }
     },
-    updateProject: async (id, projectData, userId) => {
+    updateProject: async (id, projectData, token, user) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/${id}`, projectData, { params: { userId } });
+            const response = await axios.put(`${API_BASE_URL}/${id}`, projectData, { headers: { Authorization: `Bearer ${token}` } });
+            const activity = activityHelper.createActivity(user, "updated", "project")
             toast.success('Project updated successfully!');
-            return response.data;
+            return {
+                project: response.data,
+                activity
+            };
         } catch (error) {
             toast.error('Failed to update project. Please try again.');
             throw error;
         }
     },
-    deleteProject: async (id, userId) => {
+    deleteProject: async (id, userId, user) => {
         try {
             await axios.delete(`${API_BASE_URL}/${id}`, { params: { userId } });
+            const activity = activityHelper.createActivity(user, "deleted", "project")
+
             toast.success('Project deleted successfully!');
+            return activity;
         } catch (error) {
             toast.error('Failed to delete project. Please try again.');
             throw error;
         }
     },
-    uploadProjectFiles: async (id, files, token) => {
-        console.log(token);
-        
+    uploadProjectFiles: async (id, files, token, user) => {
         try {
             const formData = new FormData();
             for (let i = 0; i < files.length; i++) {
@@ -66,8 +76,13 @@ const projectService = {
                     Authorization: `Bearer ${token}`
                 },
             });
+            const activity = activityHelper.createActivity(user, "upload", "file")
+
             toast.success('Files uploaded successfully!');
-            return response.data;
+            return {
+                project: response.data,
+                activity
+            };
         } catch (error) {
             toast.error('Failed to upload files. Please try again.');
             throw error;
@@ -82,19 +97,22 @@ const projectService = {
             throw error;
         }
     },
-    deleteProjectFiles: async (id, fileNames, token) => {
+    deleteProjectFiles: async (id, fileNames, token, user) => {
         try {
             await axios.delete(`${API_BASE_URL}/${id}/files`, {
                 headers: { Authorization: `Bearer ${token}` },
                 data: { fileNames }, // Include data in the config object
             });
+            const activity = activityHelper.createActivity(user, "deleted", "file")
+
             toast.success('Files deleted successfully!');
+            return activity;
         } catch (error) {
             toast.error('Failed to delete files. Please try again.');
             throw error;
         }
     },
-    
+
     downloadProjectFile: async (id, filename, token) => {
         try {
             const encodedFilename = encodeURIComponent(filename);
@@ -144,3 +162,4 @@ const projectService = {
 };
 
 export default projectService;
+

@@ -1,12 +1,17 @@
+import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:4500/api';
 
 const taskService = {
-    async createTask(projectId, taskData) {
+    async createTask(projectId, taskData, user) {
         try {
             const response = await axios.post(`${API_URL}/projects/${projectId}/tasks`, taskData);
-            return response.data;
+            const activity = activityHelper.createActivity(user,"created task", taskData.title )
+            return {
+              task: response.data,
+              activity: activity
+            };
         } catch (error) {
             throw error.response?.data || error.message;
         }
@@ -21,18 +26,27 @@ const taskService = {
         }
     },
 
-    async updateTask(taskId, taskData) {
+    async updateTask(taskId, taskData, user) {
         try {
             const response = await axios.put(`${API_URL}/projects/tasks/${taskId}`, taskData);
-             return response.data
+             const activity = activityHelper.createActivity(user,"updated task", taskData.title )
+
+            return {
+             task: response.data,
+             activity
+            }
         } catch (error) {
             throw error.response?.data || error.message;
         }
     },
-    async deleteTask(taskId){
+    async deleteTask(taskId, user){
       try {
            const response = await axios.delete(`${API_URL}/projects/tasks/${taskId}`);
-           return response.data;
+            const activity = activityHelper.createActivity(user,"deleted task", "task name" )
+            return {
+              task: response.data,
+              activity
+            }
        } catch (error) {
            throw error.response?.data || error.message;
        }

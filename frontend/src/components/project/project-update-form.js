@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -8,6 +8,9 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useToast } from "@/hooks/use-toast"
 import projectService from "@/services/project-service"
+import { UserService } from "@/services/user-service"
+import { Badge } from "@/components/ui/badge";
+import { parseCookies } from "nookies"
 
 export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
 
@@ -24,7 +27,17 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
         milestones: "",
     })
 
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
+    const [users, setUsers] = useState([]);
+    const [tags, setTags] = useState([])
+    const [searchQuery, setSearchQuery] = useState("");
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const searchInputRef = useRef(null);
+    const cookies = parseCookies();
+
     const { toast } = useToast();
+    const [selectedMembers, setSelectedMembers] = useState([]);
+
 
     useEffect(() => {
         if (initialData) {
@@ -35,37 +48,104 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
                 teamMembers: Array.isArray(initialData.team_members)
                     ? initialData.team_members
                     : JSON.parse(initialData.team_members || "[]"),
-            })
+            });
+
+            setTags(Array.isArray(initialData.tags)
+                ? initialData.tags
+                : JSON.parse(initialData.tags || "[]"))
+
+            setSelectedMembers(Array.isArray(initialData.team_members)
+                ? initialData.team_members
+                : JSON.parse(initialData.team_members || "[]"));
         }
     }, [initialData])
+
 
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({ ...prev, [name]: value }))
     }
+    const handleSearchFocus = () => {
+        setIsSearchVisible(true);
+    };
+    const handleSearchBlur = () => {
+        // Use a small delay to allow for checkbox clicks
+        setTimeout(() => {
+            setIsSearchVisible(false);
+        }, 200);
+    };
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
 
-    const handleTeamMemberChange = (member) => {
-        setFormData((prev) => ({
-            ...prev,
-            teamMembers: prev.teamMembers.includes(member)
-                ? prev.teamMembers.filter((m) => m !== member)
-                : [...prev.teamMembers, member],
-        }))
-    }
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const userData = await UserService.getAllUsers();
+                setUsers(userData);
+                setFilteredUsers(userData);
+            } catch (error) {
+                console.error("Error fetching users:", error);
+                toast({
+                    variant: "destructive",
+                    title: "Failed to fetch users",
+                    description: error
+                })
+            }
+        };
+        fetchUsers();
+    }, []);
+
+    useEffect(() => {
+        if (searchQuery) {
+            const filtered = users.filter(user =>
+                user.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilteredUsers(filtered);
+        } else {
+            setFilteredUsers(users);
+        }
+    }, [searchQuery, users]);
+
+
+    const handleTeamMemberChange = (userId) => {
+        setFormData((prev) => {
+            const isAlreadyMember = prev.teamMembers.includes(userId);
+            let updatedTeamMembers = isAlreadyMember
+                ? prev.teamMembers.filter((id) => id !== userId)
+                : [...prev.teamMembers, userId];
+            setSelectedMembers(updatedTeamMembers)
+            return {
+                ...prev,
+                teamMembers: updatedTeamMembers,
+            };
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         try {
-            const response = await projectService.updateProject(initialData.id, formData)
+            const response = await projectService.updateProject(initialData.id, { ...formData, milestones: tags.join(",") }, cookies?.token)
             if (response) {
-                toast.success("Project updated successfully!")
+                toast({
+                    title: "Project Updates",
+                    description: "Project Updated successfully"
+                })
                 onProjectCreated()
             } else {
-                toast.error("Failed to update project. Please try again.")
+                toast({
+                    variant: "destructive",
+                    title: "Failed to update projects",
+                    description: "Failed to update projects"
+                })
             }
         } catch (error) {
-            toast.error("Failed to update project. Please try again.")
+            toast({
+                variant: "destructive",
+                title: "Failed to update projects",
+                description: "Failed to update projects"
+            })
             console.error("Error updating project:", error)
         }
     }
@@ -116,19 +196,51 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
                     <option value="High">High</option>
                 </select>
             </div>
-            <div>
+
+            <div className="space-y-2">
                 <Label>Team Members</Label>
-                <div className="flex flex-wrap gap-2">
-                    {["Alice", "Bob", "Charlie", "David", "Eve"].map((member) => (
-                        <div key={member} className="flex items-center space-x-2">
-                            <Checkbox
-                                id={`member-${member}`}
-                                checked={formData.teamMembers.includes(member)}
-                                onCheckedChange={() => handleTeamMemberChange(member)}
-                            />
-                            <label htmlFor={`member-${member}`}>{member}</label>
+                <div className="relative">
+                    <Input
+                        type="text"
+                        placeholder="Search team members..."
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        onFocus={handleSearchFocus}
+                        onBlur={handleSearchBlur}
+                        ref={searchInputRef}
+                        className="w-full"
+                    />
+                    {isSearchVisible && filteredUsers.length > 0 && (
+                        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                            {filteredUsers.map((user) => (
+                                <div
+                                    key={user.id}
+                                    className="flex items-center space-x-2 p-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => handleTeamMemberChange(user.id)}
+                                >
+                                    <label htmlFor={`member-${user.id}`} className="flex-grow">
+                                        {user.name}
+                                    </label>
+                                </div>
+                            ))}
                         </div>
-                    ))}
+                    )}
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                    {selectedMembers.map((userId) => {
+                        const user = users.find((u) => u.id === parseInt(userId))
+                        return user ? (
+                            <Badge key={userId} variant="secondary" className="text-sm">
+                                {user.name}
+                                <button
+                                    onClick={() => handleTeamMemberChange(userId)}
+                                    className="ml-1 text-xs font-semibold"
+                                >
+                                    ×
+                                </button>
+                            </Badge>
+                        ) : null;
+                    })}
                 </div>
             </div>
             <div>
@@ -160,17 +272,43 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
                 </select>
             </div>
             <div>
-                <Label htmlFor="milestones">Milestones</Label>
-                <Textarea
+                <Label htmlFor="tags">Tags</Label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                    {tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="text-sm">
+                            {tag}
+                            <button
+                                type="button"
+                                onClick={() => setTags(tags.filter((_, i) => i !== index))}
+                                className="ml-1 text-xs font-semibold"
+                            >
+                                ×
+                            </button>
+                        </Badge>
+                    ))}
+                </div>
+                <Input
                     id="milestones"
                     name="milestones"
                     value={formData.milestones}
-                    onChange={handleChange}
-                    placeholder="Enter key milestones, separated by commas"
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        // Check if the input ends with a comma or space
+                        if (value.endsWith(",") || value.endsWith(" ")) {
+                            const newTag = value.slice(0, -1).trim(); // Remove the trailing comma/space and trim the rest
+                            if (newTag && !tags.includes(newTag)) {
+                                setTags([...tags, newTag]); // Add the new tag if it doesn't already exist
+                            }
+                            setFormData((prev) => ({ ...prev, milestones: "" })); // Clear the input field
+                        } else {
+                            // Update the input value normally
+                            setFormData((prev) => ({ ...prev, milestones: value }));
+                        }
+                    }}
+                    placeholder="Enter tags, separated by commas or spaces"
                 />
             </div>
             <Button type="submit">Update Project</Button>
         </form>
     )
 }
-
