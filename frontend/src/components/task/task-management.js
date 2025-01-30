@@ -231,7 +231,7 @@ export default function TaskManagement({ projectId, teamMembers, showOnlyMyTasks
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTasks.map((task) => (
+              {filteredTasks.length > 0 ?? filteredTasks.map((task) => (
                 <TableRow key={task.id}>
                   <TableCell>{task.title}</TableCell>
                   <TableCell>

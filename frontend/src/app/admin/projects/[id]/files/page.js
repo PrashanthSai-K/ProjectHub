@@ -51,9 +51,9 @@ export default function AdminProjectFilesPage() {
       if (isNaN(projectId)) {
         throw new Error('Invalid project ID');
       }
-      const projectData = await projectService.getProjectById(projectId);
+      const projectData = await projectService.getProjectByIdAdmin(projectId, cookies?.token);
       setProject(projectData);
-      const filesData = await projectService.getAllProjectFiles(projectId)
+      const filesData = await projectService.getAllProjectFilesAdmin(projectId, cookies?.token)
       setFiles(filesData)
     }
     catch (error) {
@@ -129,7 +129,7 @@ export default function AdminProjectFilesPage() {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">{project.title} - Files</h1>
           <div className='flex items-center gap-2'>
-            <Drawer open={open} onOpenChange={setOpen}>
+            {/* <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger asChild>
                 <Button>Upload Files</Button>
               </DrawerTrigger>
@@ -162,7 +162,7 @@ export default function AdminProjectFilesPage() {
                   </div>
                 </DrawerFooter>
               </DrawerContent>
-            </Drawer>
+            </Drawer> */}
             <Link href={`/admin/projects/${projectId}`}>
               <Button variant="outline">
                 <ArrowLeft className="mr-2 h-4 w-4" />

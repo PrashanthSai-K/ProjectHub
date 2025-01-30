@@ -122,11 +122,37 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
         });
     };
 
+    const isDataChanged = () => {
+        if (formData.title !== initialData.title) return true;        
+        if (formData.description !== initialData.description) return true;
+        if (formData.department !== initialData.department) return true;
+        if (formData.startDate !== initialData.start_date ) return true;
+        if (formData.endDate !== initialData.end_date ) return true;
+        if (formData.priority !== initialData.priority) return true;
+        if (JSON.stringify(formData.teamMembers) !== initialData.team_members) return true;
+        if (formData.budget !== initialData.budget) return true;
+        if (formData.status !== initialData.status) return true;                
+        if (formData.tags !== initialData.tags) return true;
+
+        return false;
+    };
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
+        console.log(isDataChanged());
+
+        if (!isDataChanged()) {
+            toast({
+                title: "No Changes",
+                description: "No changes were made to the project."
+            });
+            return;
+        }
 
         try {
-            const response = await projectService.updateProject(initialData.id, { ...formData, milestones: tags.join(",") }, cookies?.token)
+            const response = await projectService.updateProject(formData.id, { ...formData, milestones: tags.join(",") }, cookies?.token, cookies?.user)
+
             if (response) {
                 toast({
                     title: "Project Updates",
@@ -141,6 +167,8 @@ export default function ProjectUpdateForm({ initialData, onProjectCreated }) {
                 })
             }
         } catch (error) {
+            console.log(error, "sdnojnasf");
+
             toast({
                 variant: "destructive",
                 title: "Failed to update projects",

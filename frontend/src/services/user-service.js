@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:4500/api/users";
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/users`;
 export class UserService {
   static async getAllUsers() {
     try {

@@ -1,7 +1,7 @@
 import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4500/api';
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/`; 
 
 const taskService = {
     async createTask(projectId, taskData, user) {

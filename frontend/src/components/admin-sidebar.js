@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast"
 const sidebarItems = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Projects", href: "/admin/projects", icon: ListTodo },
-  { name: "Explore", href: "/admin/explore", icon: Compass },
+  // { name: "Explore", href: "/admin/explore", icon: Compass },
   { name: "Users", href: "/admin/users-manage", icon: UserPen}
 ]
 

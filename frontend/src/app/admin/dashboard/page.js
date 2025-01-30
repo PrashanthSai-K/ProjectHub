@@ -90,18 +90,25 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent className="max-h-72 scroll-bar-none overflow-auto">
               <div className="space-y-4">
-                {projects.map((project) => (
-                  <div key={project.id} className="flex items-center">
-                    <div className="flex-1 space-y-1">
-                      <p className="font-medium">{project.title}</p>
-                      <Progress value={project.status === 'Completed' ? 100 : 0} className="w-full" />
-                    </div>
-                    <div className="ml-4 text-sm text-gray-500">
-                      <CalendarIcon className="inline-block w-4 h-4 mr-1" />
-                      {getFormattedDate(project.end_date)}
-                    </div>
-                  </div>
-                ))}
+                {
+                  projects.length === 0
+                    ?
+                    <span className="text-gray-400 text-sm">
+                      No Projects Yet.
+                    </span>
+                    :
+                    projects.map((project) => (
+                      <div key={project.id} className="flex items-center">
+                        <div className="flex-1 space-y-1">
+                          <p className="font-medium">{project.title}</p>
+                          <Progress value={project.status === 'Completed' ? 100 : 0} className="w-full" />
+                        </div>
+                        <div className="ml-4 text-sm text-gray-500">
+                          <CalendarIcon className="inline-block w-4 h-4 mr-1" />
+                          {getFormattedDate(project.end_date)}
+                        </div>
+                      </div>
+                    ))}
               </div>
             </CardContent>
           </Card>
@@ -112,28 +119,35 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent className="max-h-72 scrollbar-hidden overflow-auto">
               <div className="space-y-4">
-                {getRecentTasks(tasks).map((task) => (
-                  <div key={task.id} className="flex items-center">
-                    <div className="flex-1">
-                      <p className="font-medium">{task.title}</p>
+                {tasks.length === 0
+                  ?
+                  <span className="text-gray-400 text-sm">
+                    No Tasks Assigned.
+                  </span>
+                  :
+                  getRecentTasks(tasks).map((task) => (
+                    <div key={task.id} className="flex items-center">
+                      <div className="flex-1">
+                        <p className="font-medium">{task.title}</p>
+                        <p className="text-sm text-gray-500">{projects.find(project => project.id === task.project_id)?.title}</p>
+                      </div>
+                      <div className="ml-4 text-sm">
+                        {task.status === "Completed" ? (
+                          <span className="text-green-500 flex items-center">
+                            <CheckCircle2 className="w-4 h-4 mr-1" /> Done
+                          </span>
+                        ) : new Date(task.deadline) < new Date() ? (
+                          <span className="text-red-500 flex items-center">
+                            <AlertCircle className="w-4 h-4 mr-1" /> Overdue
+                          </span>
+                        ) : (
+                          <span className="text-orange-500 flex items-center">
+                            <Clock className="w-4 h-4 mr-1" /> {getFormattedDate(task.deadline)}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="ml-4 text-sm">
-                      {task.status === "Completed" ? (
-                        <span className="text-green-500 flex items-center">
-                          <CheckCircle2 className="w-4 h-4 mr-1" /> Done
-                        </span>
-                      ) : new Date(task.deadline) < new Date() ? (
-                        <span className="text-red-500 flex items-center">
-                          <AlertCircle className="w-4 h-4 mr-1" /> Overdue
-                        </span>
-                      ) : (
-                        <span className="text-orange-500 flex items-center">
-                          <Clock className="w-4 h-4 mr-1" /> {getFormattedDate(task.deadline)}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </CardContent>
           </Card>
@@ -144,26 +158,32 @@ export default function AdminDashboard() {
             </CardHeader>
             <CardContent className="max-h-72 scrollbar-hidden overflow-auto">
               <div className="space-y-4">
-                {activities.map((activity) => (
-                  <div key={activity.id} className="flex items-start">
-                    <Avatar className="mr-2">
-                      <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${activity.user}`} />
-                      <AvatarFallback>
-                        {activity.user
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <p className="text-sm">
-                        <span className="font-medium">{activity.user}</span> {activity.action}{" "}
-                        <span className="font-medium">{activity.target}</span>
-                      </p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
+                {activities.length === 0
+                  ?
+                  <span className="text-gray-400 text-sm">
+                    No Recent Activity.
+                  </span>
+                  :
+                  activities.map((activity) => (
+                    <div key={activity.id} className="flex items-start">
+                      <Avatar className="mr-2">
+                        <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${activity.user}`} />
+                        <AvatarFallback>
+                          {activity.user
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="text-sm">
+                          <span className="font-medium">{activity.user}</span> {activity.action}{" "}
+                          <span className="font-medium">{activity.target}</span>
+                        </p>
+                        <p className="text-xs text-gray-500">{activity.time}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </CardContent>
           </Card>

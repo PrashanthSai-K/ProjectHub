@@ -39,12 +39,12 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
 
     const handleDownload = async (filename) => {
         try {
-             setLoading(true);
-           await projectService.downloadProjectFile(projectId, filename, cookies?.token);
-         } catch (error) {
+            setLoading(true);
+            await projectService.downloadProjectFile(projectId, filename, cookies?.token);
+        } catch (error) {
             console.log(error);
         } finally {
-             setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -59,7 +59,7 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
             console.error("Error deleting file:", error);
         } finally {
             setDeleteLoading(false);
-            setFilesToDelete([]); 
+            setFilesToDelete([]);
         }
     };
 
@@ -79,7 +79,7 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
                 <p className="text-muted-foreground">No files uploaded yet.</p>
             ) : (
                 <div className="border rounded-lg shadow-sm p-6 bg-white">
-                    <div className="flex justify-between items-center mb-6">
+                    {/* <div className="flex justify-between items-center mb-6">
                         <h2 className="text-2xl font-semibold text-gray-800">Files</h2>
                          <Button
                             onClick={() => setOpenDeleteModal(true)}
@@ -90,22 +90,13 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
                             <TrashIcon className="mr-2 h-4 w-4" />
                             Delete ({selectedFiles.length})
                         </Button>
-                    </div>
+                    </div> */}
                     {files.length === 0 ? (
                         <p className="text-gray-500 text-center py-8">No files uploaded yet.</p>
                     ) : (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[50px]">
-                                        <Checkbox
-                                            checked={isAllSelected}
-                                            onCheckedChange={(checked) => {
-                                                setSelectedFiles(checked ? files.map((f) => f) : []);
-                                                 setFilesToDelete(checked ? files.map((f) => f) : []);
-                                            }}
-                                        />
-                                    </TableHead>
                                     <TableHead>File Name</TableHead>
                                     <TableHead className="w-[100px]">Action</TableHead>
                                 </TableRow>
@@ -115,27 +106,22 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
                                     const FileTypeIcon = getFileIcon(file);
                                     return (
                                         <TableRow key={file}>
-                                            <TableCell>
-                                                <Checkbox
-                                                    checked={selectedFiles.includes(file)}
-                                                    onCheckedChange={() => toggleFileSelection(file)}
-                                                />
-                                            </TableCell>
+
                                             <TableCell className="font-medium">
-                                                <div className="flex items-center space-x-2">
+                                                <div className="flex items-start space-x-2">
                                                     <FileTypeIcon className="h-5 w-5 text-gray-500" />
                                                     <span className="truncate">{file}</span>
                                                 </div>
                                             </TableCell>
                                             <TableCell className="flex justify-end">
-                                                 <Button
-                                                   variant="outline"
+                                                <Button
+                                                    variant="outline"
                                                     onClick={() => handleDownload(file)}
-                                                  >
+                                                >
                                                     <DownloadIcon className="mr-2 h-4 w-4" />
                                                     Download
                                                 </Button>
-                                             </TableCell>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -150,7 +136,7 @@ const FileExplorer = ({ initialFiles, projectId, setFiles, fetchProjectAndFiles 
                         <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                         <AlertDialogDescription>
                             This action cannot be undone. This will permanently delete
-                             {filesToDelete?.length > 0 ? ` ${filesToDelete?.length} files` : null}.
+                            {filesToDelete?.length > 0 ? ` ${filesToDelete?.length} files` : null}.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

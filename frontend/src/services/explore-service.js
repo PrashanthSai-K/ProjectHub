@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "sonner"; // Or however you import toast
 
-const API_BASE_URL = "http://localhost:4500/api/explore"; // Replace with your actual API base URL
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/explore`; 
 
 const exploreService = {
   getProjectDetails: async () => {

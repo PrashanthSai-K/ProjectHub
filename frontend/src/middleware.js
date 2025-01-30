@@ -14,12 +14,14 @@ export async function middleware(request) {
     }
 
     if (isLoginPath) {
-        const user = request.cookies.get('user')?.value;
-        
-        if (JSON.parse(user).role == "Admin") {
+        const user = await getUserRole(request.cookies.get('token')?.value);
+        if(!user) {
+            return NextResponse.next();
+        }
+        if (user?.role != 'Admin') {
             return NextResponse.redirect(new URL('/admin/dashboard', request.url));
         }
-        if (JSON.parse(user).role == "User") {
+        if (user?.role != 'User') {
             return NextResponse.redirect(new URL('/user/dashboard', request.url));
         }
         return NextResponse.next();

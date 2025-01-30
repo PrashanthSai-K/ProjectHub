@@ -3,7 +3,7 @@ import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 import { toast } from 'sonner'; // Or however you import toast
 // import { activityHelper } from '@/utils/activity-helper';
-const API_BASE_URL = 'http://localhost:4500/api/projects';
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/projects`; 
 
 const projectService = {
     createProject: async (projectData, token, user) => {
@@ -32,7 +32,7 @@ const projectService = {
     },
     getAllProjectsAdmin: async (token) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/admin`, {headers: {Authorization : `Bearer ${token}`}} );
+            const response = await axios.get(`${API_BASE_URL}/admin`, { headers: { Authorization: `Bearer ${token}` } });
             return response.data;
         } catch (error) {
             toast.error('Failed to fetch projects. Please try again.');
@@ -60,7 +60,21 @@ const projectService = {
     updateProject: async (id, projectData, token, user) => {
         try {
             const response = await axios.put(`${API_BASE_URL}/${id}`, projectData, { headers: { Authorization: `Bearer ${token}` } });
-            const activity = activityHelper.createActivity(user, "updated", "project")
+            const activity = activityHelper.createActivity(JSON.parse(user), "updated", "project")
+            toast.success('Project updated successfully!');
+            return {
+                project: response.data,
+                activity
+            };
+        } catch (error) {
+            toast.error('Failed to update project. Please try again.');
+            throw error;
+        }
+    },
+    updateProject: async (id, projectData, token, user) => {
+        try {
+            const response = await axios.put(`${API_BASE_URL}/${id}/admin`, projectData, { headers: { Authorization: `Bearer ${token}` } });
+            const activity = activityHelper.createActivity(JSON.parse(user), "updated", "project")
             toast.success('Project updated successfully!');
             return {
                 project: response.data,
@@ -120,6 +134,15 @@ const projectService = {
     getAllProjectFiles: async (id, token) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/${id}/files`, { headers: { Authorization: `Bearer ${token}` } });
+            return response.data;
+        } catch (error) {
+            toast.error('Failed to fetch files. Please try again.');
+            throw error;
+        }
+    },
+    getAllProjectFilesAdmin: async (id, token) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/${id}/files/admin`, { headers: { Authorization: `Bearer ${token}` } });
             return response.data;
         } catch (error) {
             toast.error('Failed to fetch files. Please try again.');

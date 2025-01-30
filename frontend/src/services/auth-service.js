@@ -1,5 +1,6 @@
 // utils/api.js or services/auth.js
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4500/api'; // Backend URL
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api`; 
+
 const handleResponse = async (response) => {
     if (!response.ok) {
       const error = await response.json();

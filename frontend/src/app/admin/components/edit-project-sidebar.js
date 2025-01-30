@@ -10,7 +10,7 @@ import ProjectUpdateForm from "./project-update-form"
 export function EditProjectSidebar({ project, fetchProjectData }) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const handleProjectUpdated = () => {
+  const handleProjectUpdated = () => {    
     fetchProjectData();
     setIsOpen(false);
   };

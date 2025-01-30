@@ -43,7 +43,6 @@ exports.userAuthorize = async (req, res, next) => {
         next();
     } catch (error) {
         console.log(error);
-
         res.status(400).json({ message: 'Invalid token.' });
     }
 }
@@ -63,6 +62,7 @@ exports.adminAuthorize = async (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
+        console.log(error);
         res.status(400).json({ message: 'Invalid token.' });
     }
 }

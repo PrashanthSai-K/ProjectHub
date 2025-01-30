@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator');
 const sequelize = require('../../config/database');
 const path = require('path');
+const { calculateTaskCompletion } = require('../utils/projects');
 const fs = require('fs').promises;
 
 // Utility function to check user permissions
@@ -101,6 +102,8 @@ const updateProject = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { id } = req.params;
+    console.log(id);
+    
     const userId = req.user.id;
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required for authorization' });
@@ -113,9 +116,11 @@ const updateProject = async (req, res) => {
         const [projectResults] = await sequelize.query(
             `SELECT user_id, team_members FROM projects WHERE id = ?`,
             {
-                replacements: [id],
+                replacements: [parseInt(id)],
             }
         );
+        console.log(projectResults);
+        
         if (projectResults.length === 0) {
             return res.status(404).json({ message: "Project not found" });
         }
@@ -136,7 +141,57 @@ const updateProject = async (req, res) => {
                 replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), id]
             }
         );
-        if (results.affectedRows === 0) {
+        if (results.affectedRows === 0) {                        
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        res.status(200).json({ message: 'Project updated successfully' });
+    } catch (error) {
+        console.error("Error updating project:", error);
+        res.status(500).json({ message: "Failed to update project" });
+    }
+};
+
+const updateProjectAdmin = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const { id } = req.params;
+    
+    const { title, description, department, startDate, endDate, priority, teamMembers, budget, status, milestones } = req.body;
+    if (!Array.isArray(teamMembers)) {
+        return res.status(400).json({ message: 'Team Members must be an array' });
+    }
+    try {
+        // const [projectResults] = await sequelize.query(
+        //     `SELECT user_id, team_members FROM projects WHERE id = ?`,
+        //     {
+        //         replacements: [parseInt(id)],
+        //     }
+        // );
+        // console.log(projectResults);
+        
+        // if (projectResults.length === 0) {
+        //     return res.status(404).json({ message: "Project not found" });
+        // }
+
+        // const project = projectResults[0];
+
+        // if (!hasProjectAccess(project, userId)) {
+        //     return res.status(403).json({ message: "Access Denied: User is not authorized to update this project" });
+        // }
+
+        const teamMembersWithUserId = Array.from(new Set([...teamMembers].map(String)));
+
+        const milestonesTags = Array.from(new Set(milestones.split(",").map(String)));
+
+        const [results, metadata] = await sequelize.query(
+            `UPDATE projects SET title=?, description=?, department=?, start_date=?, end_date=?, priority=?, team_members=?, budget=?, status=?, tags=? WHERE id=?`,
+            {
+                replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), id]
+            }
+        );
+        if (results.affectedRows === 0) {                        
             return res.status(404).json({ message: 'Project not found' });
         }
         res.status(200).json({ message: 'Project updated successfully' });
@@ -408,6 +463,39 @@ const getAllProjectFiles = async (req, res) => {
     }
 }
 
+const getAllProjectFilesAdmin = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [projectResults, metadata] = await sequelize.query(
+            `SELECT upload_path, files, user_id, team_members FROM projects WHERE id = ?`,
+            {
+                replacements: [id]
+            }
+        );
+        if (projectResults.length === 0) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        const project = projectResults[0];
+
+        const uploadPath = project?.upload_path;
+
+        if (!uploadPath) {
+            return res.status(404).json({ message: 'Upload Path not found for this project' })
+        }
+        const fileNames = JSON.parse(project?.files || '[]');
+        if (!fileNames) {
+            return res.status(404).json({ message: 'No files found for this project' })
+        }
+
+        const filePaths = fileNames?.map(fileName => fileName);
+        res.status(200).json({ files: filePaths });
+    } catch (error) {
+        console.error("Error fetching files:", error);
+        res.status(500).json({ message: "Failed to fetch files" });
+    }
+}
+
 
 const deleteProjectFiles = async (req, res) => {
     const { id } = req.params;
@@ -517,6 +605,32 @@ const downloadProjectFile = async (req, res) => {
     }
 }
 
+const getProjectMetrics = async (req, res) => {
+    const { id } = req.params;
+    try {
+    //  fetching project
+        const [projectResults, metadata] = await sequelize.query(
+        `SELECT * FROM projects WHERE id = ?`,
+            {
+                replacements: [id]
+            }
+        );
+        if (projectResults.length === 0) {
+            return res.status(404).json({ message: 'Project not found' });
+        }
+        const project = projectResults[0];
+         const taskMetrics = await calculateTaskCompletion(id);
+         res.status(200).json({
+                project,
+                taskMetrics
+            });
+    }
+     catch (error) {
+        console.error('Error fetching project metrics:', error);
+         res.status(500).json({ message: 'Failed to fetch project metrics' });
+    }
+}
+
 
 module.exports = {
     createProject,
@@ -525,11 +639,14 @@ module.exports = {
     getProjectById,
     getProjectByIdAdmin,
     updateProject,
+    updateProjectAdmin,
     deleteProject,
     getAllProjectFiles,
+    getAllProjectFilesAdmin,
     deleteProjectFiles,
     downloadProjectFile,
     uploadProjectFiles,
     getProjectByUserId,
-    updatePost
+    updatePost,
+    getProjectMetrics
 };
