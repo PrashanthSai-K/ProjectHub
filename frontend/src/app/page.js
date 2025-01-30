@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from "@/services/auth-service";
 import { getToken } from "@/lib/auth";
+
+
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const router = useRouter();
