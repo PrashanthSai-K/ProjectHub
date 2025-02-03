@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Sidebar } from "../sidebar"
 import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
+import "../../app/globals.css"
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)

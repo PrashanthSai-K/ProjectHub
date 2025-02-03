@@ -158,7 +158,7 @@ export default function ProjectCreateForm({ onProjectCreated }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full">
+    <form onSubmit={handleSubmit} className="space-y-4 w-full px-3 scroll-bar-none">
       <div>
         <Label htmlFor="title">Project Title</Label>
         <Input

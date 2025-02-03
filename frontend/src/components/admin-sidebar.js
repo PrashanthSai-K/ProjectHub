@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast"
 const sidebarItems = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Projects", href: "/admin/projects", icon: ListTodo },
-  // { name: "Explore", href: "/admin/explore", icon: Compass },
+  { name: "Explore", href: "/admin/explore", icon: Compass },
   { name: "Users", href: "/admin/users-manage", icon: UserPen}
 ]
 
@@ -29,7 +29,7 @@ export function Sidebar() {
   }
 
   return (
-    <div className="flex h-full flex-col justify-between border-r bg-gray-100/40 p-4 w-64">
+    <div className="flex h-full flex-col justify-between border-r bg-white md:bg-gray-100/40 p-4 w-64">
       <div className="space-y-4">
         <h2 className="mb-2 px-2 text-lg font-semibold tracking-tight">ProjectHub</h2>
         <div className="space-y-1">

@@ -74,5 +74,6 @@ export async function middleware(request) {
        return response;
     }
 
+
     return NextResponse.next();
 }
