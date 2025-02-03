@@ -19,7 +19,7 @@ require('dotenv').config();
 
 // Configure CORS
 app.use(cors({
-  origin: ['http://localhost:3000'], // Update to include your React app domain or the actual domain of your frontend
+  origin: ['http://localhost:3000', 'https://projecthub-sai.vercel.app'], // Update to include your React app domain or the actual domain of your frontend
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

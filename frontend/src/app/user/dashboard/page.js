@@ -70,6 +70,8 @@ export default function UserDashboard() {
         setTasks(flatTasks)
       }
       catch (error) {
+        console.log(error);
+        
         setError(error.message || 'Failed to load projects')
       }
       finally {

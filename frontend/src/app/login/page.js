@@ -13,6 +13,8 @@ import { api } from "@/services/auth-service";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { parseCookies } from "nookies";
+import "../globals.css";
+
 
 export default function Home() {
 
