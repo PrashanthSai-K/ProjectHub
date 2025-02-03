@@ -50,12 +50,16 @@ exports.userAuthorize = async (req, res, next) => {
 exports.adminAuthorize = async (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
+console.log("sasdasd : ",token);
+
     if (!token) {
         return res.status(401).json({ message: 'Access denied. No token provided.' });
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(decoded);
+        
         if (decoded.role != "Admin") {
             return res.status(401).json({ message: 'Access denied. No token provided.' });
         }

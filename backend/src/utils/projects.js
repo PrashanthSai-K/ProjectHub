@@ -1,16 +1,23 @@
-exports.calculateTaskCompletion = async (projectId) => {
-    const [tasks, metadata] = await sequelize.query(
-        `SELECT COUNT(*) as totalTasks,
-            SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) as completedTasks
-        FROM tasks WHERE project_id = ?`,
-        {
+// src/lib/projects.js
+
+const sequelize = require('../../config/database');
+
+async function calculateTaskCompletion(projectId) {
+    try {
+        const [tasks, metadata] = await sequelize.query(
+            `SELECT assignee, status, deadline FROM tasks WHERE project_id = ?`, {
             replacements: [projectId]
         }
-    );
+        );
+        return tasks;
+    }
+    catch (error) {
+        console.error("Error getting tasks for completion rate:", error);
+        throw error;
+    }
+}
 
-    const totalTasks = tasks[0]?.totalTasks || 0;
-    const completedTasks = tasks[0]?.completedTasks || 0;
-    const completionRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
-    return { totalTasks, completedTasks, completionRate };
-};
+module.exports = {
+    calculateTaskCompletion
+}

@@ -22,7 +22,7 @@ router.get('/:id/files/admin', adminAuthorize, getAllProjectFilesAdmin);
 router.delete('/:id/files', userAuthorize, deleteProjectFiles);
 router.get('/:id/files/:filename', userAuthorize, downloadProjectFile)
 
-router.get('/:id/metrics', userAuthorize, getProjectMetrics);
+router.get('/:id/metrics', adminAuthorize, getProjectMetrics);
 // Mount task routes under /projects
 router.use('/', taskRoutes);
 

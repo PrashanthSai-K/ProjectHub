@@ -20,7 +20,7 @@ const createProject = async (req, res) => {
     }
     const { title, description, department, startDate, endDate, priority, teamMembers, budget, status, milestones } = req.body;
     const user_id = req.user.id;
-console.log(milestones);
+    console.log(milestones);
 
     if (!user_id) {
         return res.status(400).json({ message: 'User ID is required' });
@@ -73,9 +73,9 @@ console.log(milestones);
 };
 
 const updatePost = async (req, res) => {
-    const { id , data } = req.body;
-    console.log(id , data);
-    
+    const { id, data } = req.body;
+    console.log(id, data);
+
     if (!id) {
         return res.status(400).json({ message: 'Project ID is required' });
     }
@@ -83,7 +83,7 @@ const updatePost = async (req, res) => {
         const [results, metadata] = await sequelize.query(
             `UPDATE projects SET posted = ? WHERE id = ?`,
             {
-                replacements: [data , id]
+                replacements: [data, id]
             }
         );
         if (results.affectedRows === 0) {
@@ -103,7 +103,7 @@ const updateProject = async (req, res) => {
     }
     const { id } = req.params;
     console.log(id);
-    
+
     const userId = req.user.id;
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required for authorization' });
@@ -120,7 +120,7 @@ const updateProject = async (req, res) => {
             }
         );
         console.log(projectResults);
-        
+
         if (projectResults.length === 0) {
             return res.status(404).json({ message: "Project not found" });
         }
@@ -141,7 +141,7 @@ const updateProject = async (req, res) => {
                 replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), id]
             }
         );
-        if (results.affectedRows === 0) {                        
+        if (results.affectedRows === 0) {
             return res.status(404).json({ message: 'Project not found' });
         }
         res.status(200).json({ message: 'Project updated successfully' });
@@ -157,29 +157,12 @@ const updateProjectAdmin = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
     const { id } = req.params;
-    
+
     const { title, description, department, startDate, endDate, priority, teamMembers, budget, status, milestones } = req.body;
     if (!Array.isArray(teamMembers)) {
         return res.status(400).json({ message: 'Team Members must be an array' });
     }
     try {
-        // const [projectResults] = await sequelize.query(
-        //     `SELECT user_id, team_members FROM projects WHERE id = ?`,
-        //     {
-        //         replacements: [parseInt(id)],
-        //     }
-        // );
-        // console.log(projectResults);
-        
-        // if (projectResults.length === 0) {
-        //     return res.status(404).json({ message: "Project not found" });
-        // }
-
-        // const project = projectResults[0];
-
-        // if (!hasProjectAccess(project, userId)) {
-        //     return res.status(403).json({ message: "Access Denied: User is not authorized to update this project" });
-        // }
 
         const teamMembersWithUserId = Array.from(new Set([...teamMembers].map(String)));
 
@@ -191,7 +174,7 @@ const updateProjectAdmin = async (req, res) => {
                 replacements: [title, description, department, startDate, endDate, priority, JSON.stringify(teamMembersWithUserId), budget, status, JSON.stringify(milestonesTags), id]
             }
         );
-        if (results.affectedRows === 0) {                        
+        if (results.affectedRows === 0) {
             return res.status(404).json({ message: 'Project not found' });
         }
         res.status(200).json({ message: 'Project updated successfully' });
@@ -289,7 +272,7 @@ const getAllProjectsAdmin = async (req, res) => {
         let query = 'SELECT * FROM projects';
         let replacements = {};
 
-            query = `SELECT * FROM projects`;
+        query = `SELECT * FROM projects`;
 
         const [results, metadata] = await sequelize.query(query, {
             replacements: replacements,
@@ -496,7 +479,6 @@ const getAllProjectFilesAdmin = async (req, res) => {
     }
 }
 
-
 const deleteProjectFiles = async (req, res) => {
     const { id } = req.params;
     const { fileNames } = req.body;
@@ -548,7 +530,6 @@ const deleteProjectFiles = async (req, res) => {
         res.status(500).json({ message: "Failed to delete files" });
     }
 };
-
 
 const downloadProjectFile = async (req, res) => {
     const { id } = req.params;
@@ -608,9 +589,9 @@ const downloadProjectFile = async (req, res) => {
 const getProjectMetrics = async (req, res) => {
     const { id } = req.params;
     try {
-    //  fetching project
+        //  fetching project
         const [projectResults, metadata] = await sequelize.query(
-        `SELECT * FROM projects WHERE id = ?`,
+            `SELECT * FROM projects WHERE id = ?`,
             {
                 replacements: [id]
             }
@@ -619,15 +600,15 @@ const getProjectMetrics = async (req, res) => {
             return res.status(404).json({ message: 'Project not found' });
         }
         const project = projectResults[0];
-         const taskMetrics = await calculateTaskCompletion(id);
-         res.status(200).json({
-                project,
-                taskMetrics
-            });
+        const taskMetrics = await calculateTaskCompletion(id);
+        res.status(200).json({
+            project,
+            taskMetrics
+        });
     }
-     catch (error) {
+    catch (error) {
         console.error('Error fetching project metrics:', error);
-         res.status(500).json({ message: 'Failed to fetch project metrics' });
+        res.status(500).json({ message: 'Failed to fetch project metrics' });
     }
 }
 

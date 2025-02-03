@@ -10,6 +10,8 @@ const createActivity = (user, action, target) => {
     };
 };
 
+
+
 export const activityHelper = {
     createActivity
 }

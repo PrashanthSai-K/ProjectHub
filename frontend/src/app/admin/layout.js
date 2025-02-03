@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Menu } from "lucide-react"
 import { Toaster } from "@/components/ui/toaster"
 import { Sidebar } from "@/components/admin-sidebar"
+import "../globals.css";
 
 export default function Layout({ children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)

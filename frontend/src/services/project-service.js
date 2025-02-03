@@ -1,9 +1,8 @@
-
 import { activityHelper } from '@/lib/activity';
 import axios from 'axios';
 import { toast } from 'sonner'; // Or however you import toast
 // import { activityHelper } from '@/utils/activity-helper';
-const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/projects`; 
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:4500"}/api/projects`;
 
 const projectService = {
     createProject: async (projectData, token, user) => {
@@ -71,7 +70,7 @@ const projectService = {
             throw error;
         }
     },
-    updateProject: async (id, projectData, token, user) => {
+       updateProjectAdmin: async (id, projectData, token, user) => {
         try {
             const response = await axios.put(`${API_BASE_URL}/${id}/admin`, projectData, { headers: { Authorization: `Bearer ${token}` } });
             const activity = activityHelper.createActivity(JSON.parse(user), "updated", "project")
@@ -140,7 +139,7 @@ const projectService = {
             throw error;
         }
     },
-    getAllProjectFilesAdmin: async (id, token) => {
+     getAllProjectFilesAdmin: async (id, token) => {
         try {
             const response = await axios.get(`${API_BASE_URL}/${id}/files/admin`, { headers: { Authorization: `Bearer ${token}` } });
             return response.data;
@@ -169,7 +168,6 @@ const projectService = {
         try {
             const encodedFilename = encodeURIComponent(filename);
             const url = `${API_BASE_URL}/${id}/files/${encodedFilename}`;
-
 
             // Create a new link element with the correct target
             const link = document.createElement('a');
@@ -207,6 +205,16 @@ const projectService = {
 
         } catch (error) {
             console.error("Download Error:", error);
+            throw error;
+        }
+    },
+     getProjectMetrics: async (id, token) => {
+         try {
+             const response = await axios.get(`${API_BASE_URL}/${id}/metrics`, { headers: { Authorization: `Bearer ${token}` } });
+                return response.data;
+        } catch (error) {
+            console.error("Error fetching project metrics:", error);
+            toast.error('Failed to fetch project metrics. Please try again.');
             throw error;
         }
     }
